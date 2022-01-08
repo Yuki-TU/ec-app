@@ -1,0 +1,42 @@
+name: CI
+on: push
+jobs:
+  lint-format: #ジョブ名
+    runs-on: ubuntu-latest #実行環境(Ubuntuの最新版環境で実行)
+    strategy: # Nodeのバージョン
+      matrix:
+        node-version: [14.x]
+    steps: #実行処理やコマンドを記述(上からnameの内容が実行される)
+      - name: Git checkout current branch #作業ブランチにchekout
+        uses: actions/checkout@v2 #サードパーティの公開アクションを利用
+        with:
+          ref: ${{ github.ref }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm # cacheを利用
+      - name: Install package
+        run: npm ci
+      - name: Run format(prettier) and lint(eslint)
+        run: npm run format && npm run lint
+  test:
+    runs-on: ubuntu-latest
+    needs: [lint-format]
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - name: Git checkout current branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install package
+        run: npm ci
+      - name: Run test
+        run: npm test
