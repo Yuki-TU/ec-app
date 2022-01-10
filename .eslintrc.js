@@ -26,5 +26,8 @@ module.exports = {
     },
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {},
+  rules: {
+    'no-alert': 'off',
+    'import/prefer-default-export': 'off',
+  },
 };
