@@ -1,0 +1,124 @@
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
+import { TextInput } from '../../uiParts/TextInput';
+import { PrimaryButton } from '../../uiParts/PrimaryButton';
+import { signUp } from '../../../reducks/users/operation';
+import { validateForm } from './hook';
+
+/** スタイル */
+const useStyles = makeStyles({
+  root: {
+    margin: '0 auto',
+    maxWidth: '400px',
+    padding: '1rem',
+    height: 'auto',
+    width: 'calc(100% - 2rem)',
+    textAlign: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    color: '#4dd0e1',
+    fontSize: '1.563rem',
+    margin: '0 auto 1rem auto',
+  },
+});
+
+/**
+ * サインアップ画面のコンポーネント
+ * @return サインアップコンポーネント
+ */
+function SignUp() {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  // ユーザ登録に関する情報ステータス
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const inputUserName = useCallback(
+    (event) => {
+      setUserName(event.target.value);
+    },
+    [setUserName]
+  );
+
+  const inputEmail = useCallback(
+    (e) => {
+      setEmail(e.target.value);
+    },
+    [setEmail]
+  );
+
+  const inputPassword = useCallback(
+    (e) => {
+      setPassword(e.target.value);
+    },
+    [setPassword]
+  );
+
+  const inputConfirmPassword = useCallback(
+    (e) => {
+      setConfirmPassword(e.target.value);
+    },
+    [setConfirmPassword]
+  );
+
+  return (
+    <div className={classes.root}>
+      <h2 className={classes.title}>アカウント登録</h2>
+      <TextInput
+        fullWidth
+        label="ユーザ名"
+        multiline={false}
+        required
+        rows={1}
+        value={userName}
+        type="text"
+        onChange={inputUserName}
+      />
+      <TextInput
+        fullWidth
+        label="メールアドレス"
+        multiline={false}
+        required
+        rows={1}
+        value={email}
+        type="email"
+        onChange={inputEmail}
+      />
+      <TextInput
+        fullWidth
+        label="パスワード（半角英数字6文字以上）"
+        multiline={false}
+        required
+        rows={1}
+        value={password}
+        type="password"
+        onChange={inputPassword}
+      />
+      <TextInput
+        fullWidth
+        label="パスワードの再確認"
+        multiline={false}
+        required
+        rows={1}
+        value={confirmPassword}
+        type="password"
+        onChange={inputConfirmPassword}
+      />
+      <PrimaryButton
+        label="登録"
+        onClick={() => {
+          if (validateForm(userName, email, password, confirmPassword)) {
+            dispatch(signUp(userName, email, password));
+          }
+        }}
+      />
+    </div>
+  );
+}
+
+export default SignUp;
