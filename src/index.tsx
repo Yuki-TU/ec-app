@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import * as History from 'history';
+import { ThemeProvider } from '@material-ui/styles';
 import { ConnectedRouter } from 'connected-react-router';
 import App from './App';
 import createStore from './reducks/store';
@@ -16,7 +17,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
+        <ThemeProvider theme={theme}>
           <App />
+        </ThemeProvider>
       </ConnectedRouter>
     </Provider>
   </React.StrictMode>,
