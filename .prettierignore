@@ -1,0 +1,4 @@
+# Ignore directory
+build
+coverag
+node_modules
