@@ -3,6 +3,7 @@ import { Action } from '@reduxjs/toolkit';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { push } from 'connected-react-router';
@@ -124,5 +125,37 @@ export function signIn(email: string, password: string) {
         throw new Error(error.message);
       }
     }
+  };
+}
+
+/**
+ * firebase内でサインイン状態を確認し、サインイン状態であればユーザ情報をセット、
+ * そうでなければ、サインイン画面に飛ばす処理
+ * @returns firebaseでサインイン状態を確認するコールバック関数
+ */
+export function listenAuthState() {
+  return async (dispatch: Dispatch<Action>) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        dispatch(push('/signin'));
+        return;
+      }
+      const data = await fetchDataFromDatabase<User>('users', user.uid);
+      if (!data) {
+        alert('不具合が発生しました。アカウント作成し直してください。');
+        throw new Error(`can"t find user data in database`);
+      }
+      dispatch(
+        signInAction({
+          customer_id: data.customer_id ? data.customer_id : '',
+          email: data.email,
+          isSignedIn: true,
+          payment_method_id: user.uid,
+          role: data.role,
+          uid: user.uid,
+          username: data.username,
+        })
+      );
+    });
   };
 }
