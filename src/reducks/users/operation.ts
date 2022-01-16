@@ -1,9 +1,14 @@
 import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { push } from 'connected-react-router';
 import { auth, db, firebaseTimestamp } from '../../firebase/index';
+import { signInAction } from './update';
+import { User } from './types';
 
 /**
  * firebasestoreにデータを保存
@@ -79,6 +84,44 @@ export function signUp(username: string, email: string, password: string) {
     } catch (error) {
       if (error instanceof Error) {
         alert('ユーザ登録に失敗しました。時間を置いてもう一度お試しください。');
+        throw new Error(error.message);
+      }
+    }
+  };
+}
+/**
+ * emailとパスワードでサイン処理するコールバック関数の定義
+ * @param email Eメール
+ * @param password パスワード
+ * @returns ログイン処理のコールバック関数
+ */
+export function signIn(email: string, password: string) {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      const userData = await fetchDataFromDatabase<User>('users', user.uid);
+      if (!userData) {
+        alert('不具合が発生しました。アカウントを作り直してください。');
+        return;
+      }
+      dispatch(
+        signInAction({
+          customer_id: userData.customer_id,
+          email: userData.email,
+          isSignedIn: true,
+          payment_method_id: userData.payment_method_id,
+          role: userData.role,
+          uid: user.uid,
+          username: userData.username,
+        })
+      );
+      // サインインしたらトップページへ遷移
+      dispatch(push('/'));
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(
+          '認証に失敗しました。IDとパスワードが正しいかもう一度ご確認ください。'
+        );
         throw new Error(error.message);
       }
     }
