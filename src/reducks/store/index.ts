@@ -12,14 +12,18 @@ import {
 import * as History from 'history';
 import {
   TypedUseSelectorHook,
+  useSelector as useReduxSelector, // 別名インポートする
 } from 'react-redux';
 import thunk from 'redux-thunk';
+import { User } from '../users/types';
+import { user } from '../users/update';
 
 /**
  * ルートリデューサーの型
  */
 export type RootState = {
   router: RouterState<unknown>;
+  user: User;
 };
 
 /**
@@ -35,6 +39,7 @@ export default function createStore(history: History.History) {
   >({
     reducer: {
       router: connectRouter(history),
+      user,
     },
     middleware: [routerMiddleware(history), thunk],
   });
