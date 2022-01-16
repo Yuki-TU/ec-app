@@ -13,3 +13,8 @@ export const loadUserName = createSelector(
   [userSelector],
   (state) => state.username
 );
+/** サインインフラグの取得 */
+export const loadSignedIn = createSelector(
+  [userSelector],
+  (state) => state.isSignedIn
+);
