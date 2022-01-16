@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { push } from 'connected-react-router';
 import { auth, db, firebaseTimestamp } from '../../firebase/index';
 
@@ -18,6 +18,25 @@ async function saveDataToDatabase<T>(collection: string, key: string, data: T) {
     if (error instanceof Error) {
       throw new Error(error.message);
     }
+  }
+}
+/**
+ * firebasestoreからのデータ取得
+ * @param collection firebaseのコレクション名
+ * @param key キーとする値
+ * @returns 取得データ
+ */
+async function fetchDataFromDatabase<T>(collection: string, key: string) {
+  try {
+    const referenceData = doc(db, collection, key);
+    const result = await getDoc(referenceData);
+    // 取得データを型変換して返却
+    return result.data() as T;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+    throw new Error('failed to fetch firestore');
   }
 }
 /**
