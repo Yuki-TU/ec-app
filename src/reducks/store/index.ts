@@ -44,3 +44,6 @@ export default function createStore(history: History.History) {
     middleware: [routerMiddleware(history), thunk],
   });
 }
+
+/** useSelectorをrottStateの型付けしてエクスポート(useSelectorを利用する場合はこちらを利用) */
+export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector;
