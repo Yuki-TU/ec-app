@@ -4,7 +4,6 @@ import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signIn } from '../../../reducks/users/operation';
 import { useStyles } from './style';
-import { validateSignInForm } from './hook';
 
 /**
  * サインイン画面のコンポーネント
@@ -60,9 +59,7 @@ function SignUp() {
         <PrimaryButton
           label="サインイン"
           onClick={() => {
-            if (validateSignInForm(email, password)) {
-              dispatch(signIn(email, password));
-            }
+            dispatch(signIn(email, password));
           }}
         />
       </div>
