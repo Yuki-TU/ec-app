@@ -1,11 +1,73 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { TextInput } from '../../uiParts/TextInput';
+import { PrimaryButton } from '../../uiParts/PrimaryButton';
+import { signIn } from '../../../reducks/users/operation';
+import { useStyles } from './style';
+import { validateSignInForm } from './hook';
 
-function SighIn() {
+/**
+ * サインイン画面のコンポーネント
+ * @return サインアップコンポーネント
+ */
+function SignUp() {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  // ユーザ登録に関する情報ステータス
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  /** 入力メールアドレスの更新 */
+  const inputEmail = useCallback(
+    (e) => {
+      setEmail(e.target.value);
+    },
+    [setEmail]
+  );
+  /** 入力パスワードの更新 */
+  const inputPassword = useCallback(
+    (e) => {
+      setPassword(e.target.value);
+    },
+    [setPassword]
+  );
+
   return (
-    <div>
-      <h2>サインイン</h2>
+    <div className={classes.root}>
+      <h2 className={classes.title}>サインイン</h2>
+      <TextInput
+        fullWidth
+        label="メールアドレス"
+        multiline={false}
+        required
+        rows={1}
+        value={email}
+        type="email"
+        onChange={inputEmail}
+      />
+      <TextInput
+        fullWidth
+        label="パスワード（半角英数字6文字以上）"
+        multiline={false}
+        required
+        rows={1}
+        value={password}
+        type="password"
+        onChange={inputPassword}
+      />
+      <div className={classes.button}>
+        <PrimaryButton
+          label="サインイン"
+          onClick={() => {
+            if (validateSignInForm(email, password)) {
+              dispatch(signIn(email, password));
+            }
+          }}
+        />
+      </div>
     </div>
   );
 }
 
-export default SighIn;
+export default SignUp;
