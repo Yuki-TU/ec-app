@@ -147,7 +147,7 @@ export function listenAuthState() {
       }
       dispatch(
         signInAction({
-          customer_id: data.customer_id ? data.customer_id : '',
+          customer_id: data.customer_id,
           email: data.email,
           isSignedIn: true,
           payment_method_id: user.uid,
