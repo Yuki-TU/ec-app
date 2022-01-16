@@ -1,11 +1,26 @@
 import {
-  applyMiddleware,
-  combineReducers,
-  createStore as reduxCreateStore,
+  AnyAction,
+  configureStore,
+  Dispatch,
+  Middleware,
 } from '@reduxjs/toolkit';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+import {
+  connectRouter,
+  routerMiddleware,
+  RouterState,
+} from 'connected-react-router';
 import * as History from 'history';
+import {
+  TypedUseSelectorHook,
+} from 'react-redux';
 import thunk from 'redux-thunk';
+
+/**
+ * ルートリデューサーの型
+ */
+export type RootState = {
+  router: RouterState<unknown>;
+};
 
 /**
  * リデューサーを一つにまとめストアを作成
@@ -13,10 +28,14 @@ import thunk from 'redux-thunk';
  * @return ストア
  */
 export default function createStore(history: History.History) {
-  return reduxCreateStore(
-    combineReducers({
+  return configureStore<
+    RootState,
+    AnyAction,
+    Middleware<unknown, unknown, Dispatch<AnyAction>>[]
+  >({
+    reducer: {
       router: connectRouter(history),
-    }),
-    applyMiddleware(thunk, routerMiddleware(history))
-  );
+    },
+    middleware: [routerMiddleware(history), thunk],
+  });
 }
