@@ -15,11 +15,16 @@ const userSlice = createSlice({
       // ストアの値の更新
       return updatedData;
     },
+    signOutAction: () => {
+      // サインアウト時は初期値に戻す
+      const updatedData = { ...initialUserState };
+      return updatedData;
+    },
   },
 });
 
 // action creatorをエクスポート
-export const { signInAction } = userSlice.actions;
+export const { signInAction, signOutAction } = userSlice.actions;
 
 // reducerをエクスポート
 export const user = userSlice.reducer;
