@@ -2,13 +2,14 @@ import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as signOutInFirebase,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { push } from 'connected-react-router';
 import { auth, db, firebaseTimestamp } from '../../firebase/index';
-import { signInAction } from './update';
+import { signInAction, signOutAction } from './update';
 import { User } from './types';
 
 /**
@@ -127,7 +128,25 @@ export function signIn(email: string, password: string) {
     }
   };
 }
-
+/**
+ * サインアウト処理を行い、サインイン画面に飛ばす
+ * @returns サインアウト処理をするコールバック関数
+ */
+export function signOut() {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      await signOutInFirebase(auth);
+      // ストアのユーザ情報を初期値にする
+      dispatch(signOutAction());
+      dispatch(push('/signin'));
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('Failed to logout.');
+    }
+  };
+}
 /**
  * firebase内でサインイン状態を確認し、サインイン状態であればユーザ情報をセット、
  * そうでなければ、サインイン画面に飛ばす処理
