@@ -1,10 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/styles';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signUp } from '../../../reducks/users/operation';
 import { validateForm } from './hook';
+import { TextLink } from '../../uiParts/TextLink';
 
 /** スタイル */
 const useStyles = makeStyles({
@@ -115,6 +117,12 @@ function SignUp() {
           if (validateForm(userName, email, password, confirmPassword)) {
             dispatch(signUp(userName, email, password));
           }
+        }}
+      />
+      <TextLink
+        label="アカウントをお持ちの方はこちら"
+        onClick={() => {
+          dispatch(push('./signin'));
         }}
       />
     </div>

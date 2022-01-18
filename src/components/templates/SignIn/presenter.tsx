@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signIn } from '../../../reducks/users/operation';
 import { useStyles } from './style';
+import { TextLink } from '../../uiParts/TextLink';
 
 /**
  * サインイン画面のコンポーネント
@@ -63,6 +65,18 @@ function SignUp() {
           }}
         />
       </div>
+      <TextLink
+        label="アカウントをお持ちでない方はこちら"
+        onClick={() => {
+          dispatch(push('./signup'));
+        }}
+      />
+      <TextLink
+        label="パスワードを忘れた方はこちら"
+        onClick={() => {
+          dispatch(push('./signin/reset'));
+        }}
+      />
     </div>
   );
 }
