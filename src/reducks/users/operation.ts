@@ -3,6 +3,7 @@ import { Action } from '@reduxjs/toolkit';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut as signOutInFirebase,
 } from 'firebase/auth';
@@ -176,5 +177,23 @@ export function listenAuthState() {
         })
       );
     });
+  };
+}
+/**
+ * パスワードリセットメールを送信する処理のコールバック関数を返却
+ * @param email パスワードリセットメールを送信するアドレス
+ * @returns パスワードリセットメール処理をするコールバック関数
+ */
+export function resetPassword(email: string) {
+  return async (dispatch: Dispatch<Action>) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert(
+        '指定アドレスにパスワードリセットメールを送信しました。ご確認ください。'
+      );
+      dispatch(push('./signin'));
+    } catch (error) {
+      alert('不具合が発生しました。時間を置いてもう一度実行してください。');
+    }
   };
 }
