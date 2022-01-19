@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+# ec-app-ystore
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ec-app-ystore は EC サイトの ystore です。
+商品を登録、閲覧、商品のアップロードをすることができます。
 
-## Available Scripts
+環境構築は[Create React APP](https://create-react-app.dev/)を利用。
+言語は、TypeScript(\*.ts）で記述。
+ライブラリは[React.js](https://ja.reactjs.org/) を利用。
+デザインは[material-ui](https://mui.com/getting-started/usage/)を利用。
+状態管理は[redux](https://redux.js.org/) 及び [reduxtoolkit](https://redux-toolkit.js.org/)を利用。
+ルーティングは[react-router](https://reactrouter.com/)を利用。
+アプリケーションサービス [fireabase](https://firebase.google.com/?hl=ja) を利用。
 
-In the project directory, you can run:
+# 開発手順
 
-### `npm start`
+- 必要なツール
+  - `node: 14.x`
+  - `npm: 6.x`
+- 環境構築
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  1. `.env.example`に必要な値を代入し、`.env`にリネームする。
+  2. 以下のコマンドを事項
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+  ```sh
+  $ git clone https://github.com/Yuki-TU/ec-app.git
+  $ cd ./ec-app
+  # 必要なパッケージインストール
+  $ npm install ci
+  # ローカルサーバーの起動
+  $ npm start
+  ```
 
-### `npm test`
+  ローカルサーバーが起動したら[http://localhost:3000/](http://localhot:3000/)にアクセス
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- ビルド
 
-### `npm run build`
+  ```sh
+  $ npm run build
+  ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  直下に`./build`ディレクトリが作成されます
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- format
+  [prettier](https://prettier.io/)を導入しています。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  ```sh
+  $ npm run format
+  ```
 
-### `npm run eject`
+- lint
+  [eslint](https://github.com/eslint/eslint)を導入しています。
+  ルールのベースは [airbnb](https://github.com/airbnb/javascript)とする。
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  ```sh
+  $ npm run lint
+  ```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 自動テスト
+  [jest](https://jestjs.io/ja/) 及び [react-testing-library](https://testing-library.com/docs/react-testing-library/intro/) を利用します。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  ```sh
+  $ npm test
+  ```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# デプロイ方法
 
-## Learn More
+- 自動デプロイについて
+  - github action による CD を導入しているため、main ブランチにマージされると自動的にデプロイされる
+- 手動でのデプロイ方法
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  1. `.env`ファイルに必要な値を設定
+  2. 以下のコマンドを実行
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+  ```sh
+  $ firebase deploy --only hosting
+  ```
+
+  3. [https://ec-app-ystore.web.app/](https://ec-app-ystore.web.app/)にデプロイされていることを確認
+
+# デモページ
+
+- 公式ページ
+  [https://ec-app-ystore.web.app/](https://ec-app-ystore.web.app/)
+- ステージング
+  - PR を作成するたびに作成されます
+  - 各 PR ページよりアクセス
+
+# 互換性
+
+- デスクトップ用 Chrome 97+
+- iphone safari ios 14+
