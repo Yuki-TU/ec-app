@@ -11,6 +11,7 @@ jest.mock('connected-react-router', () => jest.fn());
 jest.mock('react-redux');
 jest.mock('./style');
 jest.mock('../../uiParts/PrimaryButton/style');
+jest.mock('../../../firebase', () => {});
 
 const mockUseDispatch = useDispatch as jest.Mock;
 const mockUseStyles = useStyles as jest.Mock;
