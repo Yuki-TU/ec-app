@@ -6,6 +6,7 @@ import { SelectBox } from '../../uiParts/SelectBox';
 import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
 import { ImageAddArea } from './ImageAddArea';
+import { validateProductAddForm } from './hook';
 
 /**
  * 商品編集をする画面の古音ポーネンと
@@ -123,18 +124,27 @@ function ProductEdit() {
       <div className={classes.registerButton}>
         <PrimaryButton
           label="保存"
-          onClick={() =>
-            dispatch(
-              saveProduct(
+          onClick={() => {
+            if (
+              validateProductAddForm(
                 productName,
                 productDescription,
                 category,
                 gender,
-                images,
                 productPrice
               )
             )
-          }
+              dispatch(
+                saveProduct(
+                  productName,
+                  productDescription,
+                  category,
+                  gender,
+                  images,
+                  productPrice
+                )
+              );
+          }}
         />
       </div>
     </div>
