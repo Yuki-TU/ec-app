@@ -130,6 +130,7 @@ function ProductEdit() {
                 productDescription,
                 category,
                 gender,
+                images,
                 productPrice
               )
             )

@@ -37,6 +37,7 @@ export function saveProduct(
   description: string,
   category: string,
   gender: string,
+  images: { id: string; path: string }[],
   price: string
 ) {
   return async (dispatch: Dispatch<Action>) => {
@@ -49,6 +50,7 @@ export function saveProduct(
       description,
       gender,
       id,
+      images,
       name,
       price: parseInt(price, 10),
       updated_at: nowTimeStamp,
