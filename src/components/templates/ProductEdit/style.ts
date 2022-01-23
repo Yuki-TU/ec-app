@@ -15,7 +15,8 @@ export const useStyles = makeStyles({
     fontSize: '1.563rem',
     margin: '0 auto 1rem auto',
   },
-  button: {
+  registerButton: {
+    textAlign: 'center',
     marginTop: '5rem',
   },
 });
