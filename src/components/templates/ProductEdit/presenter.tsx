@@ -5,6 +5,7 @@ import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { SelectBox } from '../../uiParts/SelectBox';
 import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
+import { ImageAddArea } from './ImageAddArea';
 
 /**
  * 商品編集をする画面の古音ポーネンと
@@ -20,6 +21,7 @@ function ProductEdit() {
   const [category, setCategory] = useState('');
   const [gender, setGender] = useState('');
   const [productPrice, setProductPrice] = useState('');
+  const [images, setImages] = useState<{ id: string; path: string }[]>([]);
 
   // プルダウン選択に必要なデータ定義
   const categories = [
@@ -73,6 +75,7 @@ function ProductEdit() {
   return (
     <div className={classes.root}>
       <h2 className={classes.title}>商品の登録</h2>
+      <ImageAddArea images={images} setImages={setImages} />
       <TextInput
         fullWidth
         label="商品名"
