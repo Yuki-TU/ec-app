@@ -120,7 +120,7 @@ function ProductEdit() {
         type="number"
         onChange={inputProductPrice}
       />
-      <div className={classes.button}>
+      <div className={classes.registerButton}>
         <PrimaryButton
           label="保存"
           onClick={() =>
