@@ -16,7 +16,7 @@ import { db, firebaseTimestamp } from '../../firebase/index';
  */
 async function saveDataToDatabase<T>(collection: string, key: string, data: T) {
   try {
-    await setDoc(doc(db, collection, key), data);
+    await setDoc(doc(db, collection, key), data, { merge: true });
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -33,6 +33,7 @@ async function saveDataToDatabase<T>(collection: string, key: string, data: T) {
  * @returns 商品登録するコールバック
  */
 export function saveProduct(
+  productId: string,
   name: string,
   description: string,
   category: string,
@@ -42,8 +43,15 @@ export function saveProduct(
 ) {
   return async (dispatch: Dispatch<Action>) => {
     const nowTimeStamp = firebaseTimestamp.now();
-    // 保存されるデータのキーであるidをデータとして保存したいため先に取得
-    const { id } = doc(firebaseCollection(db, 'products'));
+    // 編集する商品のproductidを代入
+    let id = productId;
+
+    // productidがなれば、編集画面ではなく新規作成と判断
+    if (!id) {
+      // 新規作製の処理
+      // 保存されるデータのキーであるidをデータとして保存したいため先に取得
+      id = doc(firebaseCollection(db, 'products')).id;
+    }
 
     const savedData = {
       category,
