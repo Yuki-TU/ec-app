@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { saveProduct } from '../../../reducks/products/operations';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
@@ -7,6 +7,8 @@ import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
 import { ImageAddArea } from './ImageAddArea';
 import { validateProductAddForm } from './hook';
+import { Repository, IRepository } from '../../../repository';
+import type { ProductsForDatabase } from '../../../reducks/products/types';
 
 /**
  * 商品編集をする画面の古音ポーネンと
@@ -23,6 +25,9 @@ function ProductEdit() {
   const [gender, setGender] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [images, setImages] = useState<{ id: string; path: string }[]>([]);
+
+  // 商品変種ページの場合、URLより商品idを取得する
+  const productId = window.location.pathname.split('/product/edit/')[1];
 
   // プルダウン選択に必要なデータ定義
   const categories = [
@@ -72,6 +77,25 @@ function ProductEdit() {
     },
     [setGender]
   );
+  useEffect(() => {
+    const setProductStateForPage = async () => {
+      const repository: IRepository = new Repository();
+      // 商品編集ページのの場合、商品情報を取得
+      const response =
+        await repository.fetchDataFromDatabase<ProductsForDatabase>(
+          'products',
+          productId
+        );
+      // 取得した値をセット
+      setProductName(response.name);
+      setProductDiscription(response.description);
+      setCategory(response.category);
+      setGender(response.gender);
+      setProductPrice(response.price);
+      setImages(response.images);
+    };
+    setProductStateForPage();
+  }, [productId]);
 
   return (
     <div className={classes.root}>
@@ -136,6 +160,7 @@ function ProductEdit() {
             )
               dispatch(
                 saveProduct(
+                  productId,
                   productName,
                   productDescription,
                   category,
