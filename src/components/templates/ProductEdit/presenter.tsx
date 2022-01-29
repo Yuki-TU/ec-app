@@ -6,7 +6,6 @@ import { SelectBox } from '../../uiParts/SelectBox';
 import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
 import { ImageAddArea } from './ImageAddArea';
-import { validateProductAddForm } from './hook';
 import { Repository, IRepository } from '../../../repository';
 import type { ProductsForDatabase } from '../../../reducks/products/types';
 
