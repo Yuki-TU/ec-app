@@ -8,6 +8,8 @@ type TextInputProps = {
   fullWidth: boolean;
   /** テキスト入力欄のラベル */
   label: string;
+  /** 最小入力文字数(default: 0) */
+  minLength?: number;
   /** 複数業表示(true: 有効, false: 無効) */
   multiline: boolean;
   /** 必須入力かどうか */
@@ -29,8 +31,17 @@ type TextInputProps = {
  */
 function TextInput(props: TextInputProps) {
   const classes = useStyles();
-  const { fullWidth, label, multiline, required, rows, value, type, onChange } =
-    props;
+  const {
+    fullWidth,
+    label,
+    minLength,
+    multiline,
+    required,
+    rows,
+    value,
+    type,
+    onChange,
+  } = props;
   const textStyle = fullWidth ? classes.full : classes.half;
 
   return (
@@ -45,8 +56,14 @@ function TextInput(props: TextInputProps) {
       value={value}
       type={type}
       onChange={onChange}
+      inputProps={{ minLength }}
     />
   );
 }
+
+/** 引数のデフォルト値の設定 */
+TextInput.defaultProps = {
+  minLength: 0,
+};
 
 export default TextInput;
