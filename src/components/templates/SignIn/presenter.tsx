@@ -37,34 +37,38 @@ function SignUp() {
   return (
     <div className={classes.root}>
       <h2 className={classes.title}>サインイン</h2>
-      <TextInput
-        fullWidth
-        label="メールアドレス"
-        multiline={false}
-        required
-        rows={1}
-        value={email}
-        type="email"
-        onChange={inputEmail}
-      />
-      <TextInput
-        fullWidth
-        label="パスワード（半角英数字6文字以上）"
-        multiline={false}
-        required
-        rows={1}
-        value={password}
-        type="password"
-        onChange={inputPassword}
-      />
-      <div className={classes.button}>
-        <PrimaryButton
-          label="サインイン"
-          onClick={() => {
-            dispatch(signIn(email, password));
-          }}
+      <form
+        onSubmit={(event) => {
+          // 実際にフォーム送信しないため、以下を追加
+          event.preventDefault();
+          dispatch(signIn(email, password));
+        }}
+      >
+        <TextInput
+          fullWidth
+          label="メールアドレス"
+          multiline={false}
+          required
+          rows={1}
+          value={email}
+          type="email"
+          onChange={inputEmail}
         />
-      </div>
+        <TextInput
+          fullWidth
+          label="パスワード（半角英数字6文字以上）"
+          minLength={6}
+          multiline={false}
+          required
+          rows={1}
+          value={password}
+          type="password"
+          onChange={inputPassword}
+        />
+        <div className={classes.button}>
+          <PrimaryButton label="サインイン" type="submit" />
+        </div>
+      </form>
       <TextLink
         label="アカウントをお持ちでない方はこちら"
         onClick={() => {
