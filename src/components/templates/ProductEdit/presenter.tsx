@@ -100,78 +100,71 @@ function ProductEdit() {
   return (
     <div className={classes.root}>
       <h2 className={classes.title}>商品の登録</h2>
-      <ImageAddArea images={images} setImages={setImages} />
-      <TextInput
-        fullWidth
-        label="商品名"
-        multiline={false}
-        rows={1}
-        required
-        value={productName}
-        type="text"
-        onChange={inputProductName}
-      />
-      <TextInput
-        fullWidth
-        label="商品説明"
-        multiline
-        rows={5}
-        required
-        value={productDescription}
-        type="text"
-        onChange={inputProductDescription}
-      />
-      <SelectBox
-        label="カテゴリ"
-        required
-        items={categories}
-        onChange={inputCategory}
-        selectedItem={category}
-      />
-      <SelectBox
-        label="性別"
-        required
-        items={genders}
-        selectedItem={gender}
-        onChange={inputGender}
-      />
-      <TextInput
-        fullWidth
-        label="値段(円)"
-        multiline={false}
-        rows={1}
-        required
-        value={productPrice}
-        type="number"
-        onChange={inputProductPrice}
-      />
-      <div className={classes.registerButton}>
-        <PrimaryButton
-          label="保存"
-          onClick={() => {
-            if (
-              validateProductAddForm(
-                productName,
-                productDescription,
-                category,
-                gender,
-                productPrice
-              )
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          dispatch(
+            saveProduct(
+              productId,
+              productName,
+              productDescription,
+              category,
+              gender,
+              images,
+              productPrice
             )
-              dispatch(
-                saveProduct(
-                  productId,
-                  productName,
-                  productDescription,
-                  category,
-                  gender,
-                  images,
-                  productPrice
-                )
-              );
-          }}
+          );
+        }}
+      >
+        <ImageAddArea images={images} setImages={setImages} />
+        <TextInput
+          fullWidth
+          label="商品名"
+          multiline={false}
+          rows={1}
+          required
+          value={productName}
+          type="text"
+          onChange={inputProductName}
         />
-      </div>
+        <TextInput
+          fullWidth
+          label="商品説明"
+          multiline
+          rows={5}
+          required
+          value={productDescription}
+          type="text"
+          onChange={inputProductDescription}
+        />
+        <SelectBox
+          label="カテゴリ"
+          required
+          items={categories}
+          onChange={inputCategory}
+          selectedItem={category}
+        />
+        <SelectBox
+          label="性別"
+          required
+          items={genders}
+          selectedItem={gender}
+          onChange={inputGender}
+        />
+        <TextInput
+          fullWidth
+          label="値段(円)"
+          multiline={false}
+          rows={1}
+          required
+          value={productPrice}
+          type="number"
+          onChange={inputProductPrice}
+        />
+        <div className={classes.registerButton}>
+          <PrimaryButton label="保存" type="submit" />
+        </div>
+      </form>
     </div>
   );
 }
