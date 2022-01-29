@@ -19,7 +19,11 @@ function Top() {
       <h2>Top</h2>
       <div>userName: {userName}</div>
       <div>email: {email}</div>
-      <PrimaryButton label="サインアウト" onClick={() => dispatch(signOut())} />
+      <PrimaryButton
+        label="サインアウト"
+        type="button"
+        onClick={() => dispatch(signOut())}
+      />
     </>
   );
 }
