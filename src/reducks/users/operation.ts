@@ -191,7 +191,7 @@ export function resetPassword(email: string) {
       alert(
         '指定アドレスにパスワードリセットメールを送信しました。ご確認ください。'
       );
-      dispatch(push('./signin'));
+      dispatch(push('/signin'));
     } catch (error) {
       alert('不具合が発生しました。時間を置いてもう一度実行してください。');
     }
