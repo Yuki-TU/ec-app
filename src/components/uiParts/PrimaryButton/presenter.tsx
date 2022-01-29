@@ -6,8 +6,10 @@ import { useStyles } from './style';
 type PrimaryButtonProps = {
   /** ボタンに表記するラベル */
   label: string;
+  /** ボタンタイプ(buttn | submit | reset) */
+  type: 'button' | 'submit';
   /** ボタンを押された時のコールバック関数 */
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 /**
@@ -16,14 +18,24 @@ type PrimaryButtonProps = {
  * @return コンポーネント
  */
 function PrimaryButton(props: PrimaryButtonProps) {
-  const { label, onClick } = props;
+  const { label, onClick, type } = props;
   const classes = useStyles();
 
   return (
-    <Button className={classes.button} variant="contained" onClick={onClick}>
+    <Button
+      className={classes.button}
+      variant="contained"
+      onClick={onClick}
+      type={type}
+    >
       {label}
     </Button>
   );
 }
+
+/** 引数のデフォルト値の設定 */
+PrimaryButton.defaultProps = {
+  onClick: () => {},
+};
 
 export default PrimaryButton;

@@ -12,7 +12,7 @@ describe('PrimeButtonンポーネントは汎用ボタンを表示', () => {
   beforeEach(() => {
     // useStyleの返り値を空のオブジェクトに設定
     mockUseStyles.mockReturnValue({});
-    render(<PrimaryButton label="ok" onClick={() => {}} />);
+    render(<PrimaryButton label="ok" type="button" />);
   });
   test('ボタンタグを表示している', () => {
     expect(screen.getByRole('button')).toBeEnabled();
