@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signUp } from '../../../reducks/users/operation';
-import { validateForm } from './hook';
+import { validatePassword } from './hook';
 import { TextLink } from '../../uiParts/TextLink';
 
 /** スタイル */
@@ -74,7 +74,7 @@ function SignUp() {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          if (validateForm(userName, email, password, confirmPassword)) {
+          if (validatePassword(password, confirmPassword)) {
             dispatch(signUp(userName, email, password));
           }
         }}
