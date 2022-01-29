@@ -28,24 +28,26 @@ function PasswordReset() {
   return (
     <div className={classes.root}>
       <h2 className={classes.title}>パスワードリセット</h2>
-      <TextInput
-        fullWidth
-        label="登録済みのメールアドレス"
-        multiline={false}
-        required
-        rows={1}
-        value={email}
-        type="email"
-        onChange={inputEmail}
-      />
-      <div className={classes.button}>
-        <PrimaryButton
-          label="リセットメールを送信"
-          onClick={() => {
-            dispatch(resetPassword(email));
-          }}
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          dispatch(resetPassword(email));
+        }}
+      >
+        <TextInput
+          fullWidth
+          label="登録済みのメールアドレス"
+          multiline={false}
+          required
+          rows={1}
+          value={email}
+          type="email"
+          onChange={inputEmail}
         />
-      </div>
+        <div className={classes.button}>
+          <PrimaryButton label="リセットメールを送信" type="submit" />
+        </div>
+      </form>
     </div>
   );
 }
