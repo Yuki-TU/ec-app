@@ -6,8 +6,7 @@ import { SelectBox } from '../../uiParts/SelectBox';
 import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
 import { ImageAddArea } from './ImageAddArea';
-import { Repository, IRepository } from '../../../repository';
-import type { ProductsForDatabase } from '../../../reducks/products/types';
+import { ProductFirebaseRepository } from '../../../repository/product';
 
 /**
  * 商品編集をする画面の古音ポーネンと
@@ -78,19 +77,16 @@ function ProductEdit() {
   );
   useEffect(() => {
     const setProductStateForPage = async () => {
-      const repository: IRepository = new Repository();
       // 商品編集ページのの場合、商品情報を取得
-      const response =
-        await repository.fetchDataFromDatabase<ProductsForDatabase>(
-          'products',
-          productId
-        );
+      const productRepository = new ProductFirebaseRepository();
+      const response = await productRepository.fetch(productId);
+
       // 取得した値をセット
       setProductName(response.name);
       setProductDiscription(response.description);
       setCategory(response.category);
       setGender(response.gender);
-      setProductPrice(response.price);
+      setProductPrice(String(response.price));
       setImages(response.images);
     };
     setProductStateForPage();
