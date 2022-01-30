@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { ProductsForDatabase } from '../../reducks/products/types';
+import { ProductForDatabase } from '../../reducks/products/types';
 import { db } from '../../firebase';
 import type { IProductRepository } from './interface';
 
@@ -23,7 +23,7 @@ class ProductFirebaseRepository implements IProductRepository {
       const referenceData = doc(db, this.collection, id);
       const result = await getDoc(referenceData);
       // 取得データを型変換して返却
-      return result.data() as ProductsForDatabase;
+      return result.data() as ProductForDatabase;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -36,7 +36,7 @@ class ProductFirebaseRepository implements IProductRepository {
    * firebasestoreに商品情報を保存
    * @param product 保存したい商品データ
    */
-  async save(product: ProductsForDatabase) {
+  async save(product: ProductForDatabase) {
     const key = product.id;
 
     try {
