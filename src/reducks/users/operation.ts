@@ -7,46 +7,11 @@ import {
   signInWithEmailAndPassword,
   signOut as signOutInFirebase,
 } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { push } from 'connected-react-router';
-import { auth, db, firebaseTimestamp } from '../../firebase/index';
+import { auth, firebaseTimestamp } from '../../firebase/index';
 import { signInAction, signOutAction } from './update';
-import { User } from './types';
+import { UserFirebaseRepository } from '../../repository/user';
 
-/**
- * firebasestoreにデータを保存
- * @param collection firestoreのコレクション名
- * @param key キーとする値
- * @param data 保存したいデータ
- */
-async function saveDataToDatabase<T>(collection: string, key: string, data: T) {
-  try {
-    await setDoc(doc(db, collection, key), data);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-}
-/**
- * firebasestoreからのデータ取得
- * @param collection firebaseのコレクション名
- * @param key キーとする値
- * @returns 取得データ
- */
-async function fetchDataFromDatabase<T>(collection: string, key: string) {
-  try {
-    const referenceData = doc(db, collection, key);
-    const result = await getDoc(referenceData);
-    // 取得データを型変換して返却
-    return result.data() as T;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-    throw new Error('failed to fetch firestore');
-  }
-}
 /**
  * アカウント作成とアカウント情報をデータベースに登録するコールバック関数の定義
  * @param username 登録したいユーザー情報
@@ -78,8 +43,9 @@ export function signUp(username: string, email: string, password: string) {
           username,
         };
         // ユーザー情報をデータベースに登録
-        // データベースのusersコレクションに、ユーザ登録でランダムに作成されたユーザidをキーに各ユーザ情報を登録
-        await saveDataToDatabase('users', user.uid, userInitialData);
+        const userRepository = new UserFirebaseRepository();
+        await userRepository.saveUser(userInitialData);
+
         // 登録が成功したら、ホームに戻る
         dispatch(push('/'));
       }
@@ -101,7 +67,10 @@ export function signIn(email: string, password: string) {
   return async (dispatch: Dispatch<Action>) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
-      const userData = await fetchDataFromDatabase<User>('users', user.uid);
+      // データベースよりユーザ情報取得
+      const userRepository = new UserFirebaseRepository();
+      const userData = await userRepository.fetchUser(user.uid);
+
       if (!userData) {
         alert('不具合が発生しました。アカウントを作り直してください。');
         return;
@@ -160,7 +129,10 @@ export function listenAuthState() {
         dispatch(push('/signin'));
         return;
       }
-      const data = await fetchDataFromDatabase<User>('users', user.uid);
+      // データベースよりユーザ情報を取得
+      const userRepository = new UserFirebaseRepository();
+      const data = await userRepository.fetchUser(user.uid);
+
       if (!data) {
         alert('不具合が発生しました。アカウント作成し直してください。');
         throw new Error(`can"t find user data in database`);
