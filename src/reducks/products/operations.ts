@@ -1,28 +1,10 @@
 import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
-import {
-  collection as firebaseCollection,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+import { collection as firebaseCollection, doc } from 'firebase/firestore';
 import { db, firebaseTimestamp } from '../../firebase/index';
+import { ProductFirebaseRepository } from '../../repository/product';
 
-/**
- * firestoreデータベースにデータを保存する
- * @param collection コレクション
- * @param key キー
- * @param data 保存するデータ
- */
-async function saveDataToDatabase<T>(collection: string, key: string, data: T) {
-  try {
-    await setDoc(doc(db, collection, key), data, { merge: true });
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
-  }
-}
 /**
  * 商品登録登録し、成功したらホームに戻るコールバックの定義
  * @param name 商品名
@@ -64,7 +46,8 @@ export function saveProduct(
       updated_at: nowTimeStamp,
     };
     try {
-      await saveDataToDatabase('products', id, savedData);
+      const productRepository = new ProductFirebaseRepository();
+      await productRepository.save(savedData);
       // 保存が成功したらホームへ
       dispatch(push('/'));
     } catch (error) {
