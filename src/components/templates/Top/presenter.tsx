@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { loadUserEmail, loadUserName } from '../../../reducks/users/selectors';
 import { useSelector } from '../../../reducks/store';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
-import { signOut } from '../../../reducks/users/operation';
+import { signOut } from '../../../reducks/users/operations';
 /**
  * Top画面のコンポーネント
  * @return トップ画面のコンポーネント

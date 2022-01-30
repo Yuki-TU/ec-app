@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
-import { resetPassword } from '../../../reducks/users/operation';
+import { resetPassword } from '../../../reducks/users/operations';
 import { useStyles } from './style';
 
 /**

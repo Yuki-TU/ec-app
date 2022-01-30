@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
-import { signIn } from '../../../reducks/users/operation';
+import { signIn } from '../../../reducks/users/operations';
 import { useStyles } from './style';
 import { TextLink } from '../../uiParts/TextLink';
 
