@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import { makeStyles } from '@material-ui/styles';
 import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
-import { signUp } from '../../../reducks/users/operation';
+import { signUp } from '../../../reducks/users/operations';
 import { validatePassword } from './hook';
 import { TextLink } from '../../uiParts/TextLink';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, ReactElement } from 'react';
 import { useDispatch } from 'react-redux';
 import { loadSignedIn } from './reducks/users/selectors';
-import { listenAuthState } from './reducks/users/operation';
+import { listenAuthState } from './reducks/users/operations';
 import { useSelector } from './reducks/store';
 
 /**
