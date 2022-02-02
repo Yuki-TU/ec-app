@@ -1,3 +1,4 @@
+import { Products } from '../products/types';
 import { User } from '../users/types';
 
 /**
@@ -11,4 +12,9 @@ export const initialUserState: User = {
   role: 'customer',
   uid: '',
   username: '',
+};
+
+/** 商品情報の初期化 */
+export const initialProductState: Products = {
+  list: [],
 };
