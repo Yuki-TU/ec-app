@@ -19,3 +19,9 @@ export type ProductForDatabase = {
   /** 更新日 */
   updated_at: Timestamp;
 };
+
+/** reduxで扱う商品情報一覧の型 */
+export type Products = {
+  /** 商品情報一覧 */
+  list: ProductForDatabase[];
+};
