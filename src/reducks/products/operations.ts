@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 import { collection as firebaseCollection, doc } from 'firebase/firestore';
 import { db, firebaseTimestamp } from '../../firebase/index';
 import { ProductFirebaseRepository } from '../../repository/product';
+import { fetchProductsAction } from './updates';
 
 /**
  * 商品登録登録し、成功したらホームに戻るコールバックの定義
@@ -53,5 +54,20 @@ export function saveProduct(
     } catch (error) {
       throw new Error('failed to save the product data');
     }
+  };
+}
+
+/**
+ * 商品情報を全データを取得し、ストアに管理するコールバックの定義
+ * @returns コールバック関数
+ */
+export function fetchProducts() {
+  return async (dispatch: Dispatch<Action>) => {
+    // 商品データの取得
+    const productRepository = new ProductFirebaseRepository();
+    const productList = await productRepository.fetchAll();
+
+    // 商品全情報をストアに保存
+    dispatch(fetchProductsAction(productList));
   };
 }
