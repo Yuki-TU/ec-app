@@ -1,15 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { Timestamp } from 'firebase/firestore';
 import '@testing-library/jest-dom';
 import { useStyles } from './style';
 import { ProductCard } from '.';
-import { firebaseTimestamp } from '../../../../firebase';
 import noImage from '../../../../assets/images/no_image.png';
 
 // スタイルを指定するuseStyles関数はモック化
 jest.mock('./style');
 const mockUseStyles = useStyles as jest.Mock;
-jest.mock('firebase/firestore');
+const mockTimestamp = jest.fn() as unknown as Timestamp;
 
 describe('商品情報カードコンポーネントは商品情報を表示する', () => {
   describe('値段は、３桁金馬区切りで円マークを接頭語に表示する', () => {
@@ -30,7 +30,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
             path: noImage,
           },
         ],
-        updated_at: firebaseTimestamp.now(),
+        updated_at: mockTimestamp,
       };
       render(
         <ProductCard
@@ -64,7 +64,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
               path: noImage,
             },
           ],
-          updated_at: firebaseTimestamp.now(),
+          updated_at: mockTimestamp,
         };
         render(
           <ProductCard
