@@ -15,13 +15,16 @@ import {
   useSelector as useReduxSelector, // 別名インポートする
 } from 'react-redux';
 import thunk from 'redux-thunk';
-import { User } from '../users/types';
+import { products } from '../products/updates';
+import { Products } from '../products/types';
 import { user } from '../users/update';
+import { User } from '../users/types';
 
 /**
  * ルートリデューサーの型
  */
 export type RootState = {
+  products: Products;
   router: RouterState<unknown>;
   user: User;
 };
@@ -38,6 +41,7 @@ export default function createStore(history: History.History) {
     Middleware<unknown, unknown, Dispatch<AnyAction>>[]
   >({
     reducer: {
+      products,
       router: connectRouter(history),
       user,
     },
