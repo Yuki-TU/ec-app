@@ -1,4 +1,12 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+} from 'firebase/firestore';
 import { ProductForDatabase } from '../../reducks/products/types';
 import { db } from '../../firebase';
 import type { IProductRepository } from './interface';
@@ -29,6 +37,30 @@ class ProductFirebaseRepository implements IProductRepository {
         throw new Error(error.message);
       }
       throw new Error('failed to fetch firestore');
+    }
+  }
+
+  /**
+   * 更新順に並び変えた商品一覧を取得
+   * @returns 更新順商品一覧の配列
+   */
+  async fetchAll() {
+    try {
+      // 参照データはproductsコレクションの全てのデータ
+      const referenceData = collection(db, this.collection);
+      // 更新順でクエリ設定
+      const querySetting = query(referenceData, orderBy('updated_at', 'desc'));
+      // データ取得
+      const snapshots = await getDocs(querySetting);
+
+      const productList: ProductForDatabase[] = [];
+      snapshots.forEach((snapshot) => {
+        const product = snapshot.data() as ProductForDatabase;
+        productList.push(product);
+      });
+      return productList;
+    } catch (error) {
+      throw new Error(`cann't product data `);
     }
   }
 
