@@ -18,11 +18,20 @@ const userSlice = createSlice({
       const updatedData = { ...state, list: [...action.payload] };
       return updatedData;
     },
+    /** 商品データを削除したものを更新 */
+    deleteProductAction: (
+      state: Products,
+      action: PayloadAction<ProductForDatabase[]>
+    ) => {
+      // レンダリングさせるため、新たな配列生成する[...action.payload]の記述をする
+      const updatedData = { ...state, list: [...action.payload] };
+      return updatedData;
+    },
   },
 });
 
 // action creatorをエクスポート
-export const { fetchProductsAction } = userSlice.actions;
+export const { deleteProductAction, fetchProductsAction } = userSlice.actions;
 
 // reducerをエクスポート
 export const products = userSlice.reducer;
