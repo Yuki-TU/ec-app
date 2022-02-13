@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -19,6 +20,19 @@ class ProductFirebaseRepository implements IProductRepository {
 
   constructor() {
     this.collection = 'products';
+  }
+
+  /**
+   * firestoreより商品情報を削除
+   * @param id 削除したい商品id
+   */
+  async delete(id: string): Promise<void> {
+    try {
+      const referenceData = doc(db, this.collection, id);
+      await deleteDoc(referenceData);
+    } catch (error) {
+      throw Error('failed to delete product.');
+    }
   }
 
   /**
