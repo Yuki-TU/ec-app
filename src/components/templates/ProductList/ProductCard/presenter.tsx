@@ -9,9 +9,10 @@ import { MoreVert } from '@material-ui/icons';
 import { push } from 'connected-react-router';
 
 import type { ProductForDatabase } from '../../../../reducks/products/types';
-import noImage from '../../../../assets/images/no_image.png';
 import { useStyles } from './style';
 import { deleteProduct } from '../../../../reducks/products/operations';
+import { getThumbnail } from './hook';
+
 /**
  * 商品情報一覧で利用するカードのコンポーネント
  * @param props DB保存の商品情報
@@ -43,7 +44,7 @@ function ProductCard(props: ProductForDatabase) {
   // 例) 2000000 -> '2,000,000'
   const reshapePrime = price.toLocaleString();
   // 画像登録があれば、最初の画像をサムネイルにする
-  const thumbnail = images.length > 0 ? images[0].path : noImage;
+  const thumbnail = getThumbnail(images);
 
   return (
     <Card className={classes.root}>
