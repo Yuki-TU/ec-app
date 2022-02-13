@@ -2,9 +2,12 @@ import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { collection as firebaseCollection, doc } from 'firebase/firestore';
+
 import { db, firebaseTimestamp } from '../../firebase/index';
 import { ProductFirebaseRepository } from '../../repository/product';
-import { fetchProductsAction } from './updates';
+import { deleteProductAction, fetchProductsAction } from './updates';
+import { ProductForDatabase } from './types';
+import { RootState } from '../store';
 
 /**
  * 商品登録登録し、成功したらホームに戻るコールバックの定義
@@ -53,6 +56,32 @@ export function saveProduct(
       dispatch(push('/'));
     } catch (error) {
       throw new Error('failed to save the product data');
+    }
+  };
+}
+
+/**
+ * 指定の商品情報をDB、ストアより削除する
+ * @param id 削除したい商品いd
+ * @returns 商品削除するコールバック
+ */
+export function deleteProduct(id: string) {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    try {
+      // データベースの商品を削除
+      const productRepository = new ProductFirebaseRepository();
+      await productRepository.delete(id);
+
+      // 削除した商品以外の商品リストを作成
+      const prevProducts = getState().products.list;
+      const newProducts = prevProducts.filter(
+        (product: ProductForDatabase) => product.id !== id
+      );
+
+      // ストアの商品リストを削除した商品以外の商品リストで更新
+      dispatch(deleteProductAction(newProducts));
+    } catch (error) {
+      alert('削除に失敗しました。時間を置いてもう一度試してください。');
     }
   };
 }
