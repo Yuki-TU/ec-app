@@ -13,6 +13,8 @@ import noImage from '../../../../assets/images/no_image.png';
 jest.mock('./style');
 jest.mock('react-redux');
 jest.mock('connected-react-router', () => jest.fn());
+// firebaseの取得メソッドをモック(CIでのテストで必要)
+jest.mock('../../../../firebase', () => {});
 
 const mockUseStyles = useStyles as jest.Mock;
 const mockTimestamp = jest.fn() as unknown as Timestamp;
