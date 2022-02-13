@@ -24,6 +24,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   icon: {
+    padding: 0,
     marginRight: 0,
     marginLeft: 'auto',
   },
