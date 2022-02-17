@@ -7,6 +7,7 @@ import { Top } from './components/templates/Top';
 import Auth from './Auth';
 import { ProductEdit } from './components/templates/ProductEdit';
 import { ProductList } from './components/templates/ProductList';
+import { ProductDetail } from './components/templates/ProductDetail';
 
 /**
  * メインボディのルーティングを実施、
@@ -22,6 +23,7 @@ function Router() {
       <Auth>
         <>
           <Route exact path="(/)?" component={ProductList} />
+          <Route exact path="/product/:id" component={ProductDetail} />
           <Route exact path="/signout" component={Top} />
           <Route path="/product/edit(/:id)?" component={ProductEdit} />
         </>
