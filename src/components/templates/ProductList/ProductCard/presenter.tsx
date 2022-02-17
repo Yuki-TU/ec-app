@@ -48,7 +48,11 @@ function ProductCard(props: ProductForDatabase) {
 
   return (
     <Card className={classes.root}>
-      <CardMedia image={thumbnail} className={classes.media} />
+      <CardMedia
+        image={thumbnail}
+        className={classes.media}
+        onClick={() => dispatch(push(`/product/${id}`))}
+      />
       <CardContent className={classes.content}>
         <div>
           <Typography component="p" className={classes.productName}>

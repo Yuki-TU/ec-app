@@ -29,6 +29,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginLeft: 'auto',
   },
   media: {
+    cursor: 'pointer',
     height: 0,
     paddingTop: '100%',
   },
