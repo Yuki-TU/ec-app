@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 export const useStyles = makeStyles((theme: Theme) => ({
   root: {
     margin: '0 auto',
-    // position: 'relative',
+    position: 'relative',
     width: '100%',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
