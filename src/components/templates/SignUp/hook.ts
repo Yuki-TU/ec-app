@@ -6,7 +6,6 @@
  */
 export function validatePassword(password: string, confirmPassword: string) {
   if (password !== confirmPassword) {
-    alert('パスワードが一致しません。もう1度お試しください。');
     return false;
   }
   return true;
