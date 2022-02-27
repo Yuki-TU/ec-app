@@ -7,6 +7,7 @@ import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signUp } from '../../../reducks/users/operations';
 import { validatePassword } from './hook';
 import { TextLink } from '../../uiParts/TextLink';
+import { Dialog } from '../../uiParts/Dialog';
 
 /** スタイル */
 const useStyles = makeStyles({
@@ -39,6 +40,9 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // ダイアログを管理するステート
+  const [openFailureDialog, setOpenFailureDialog] = useState(false);
 
   const inputUserName = useCallback(
     (event) => {
@@ -76,9 +80,17 @@ function SignUp() {
           event.preventDefault();
           if (validatePassword(password, confirmPassword)) {
             dispatch(signUp(userName, email, password));
+          } else {
+            setOpenFailureDialog(true);
           }
         }}
       >
+        <Dialog
+          isOpen={openFailureDialog}
+          setIsOpen={setOpenFailureDialog}
+          title="警告"
+          text="パスワードが一致しません。パスワードと確認用パスワードは同じ値を入力してください。"
+        />
         <TextInput
           fullWidth
           label="ユーザ名"
