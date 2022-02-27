@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ProductForDatabase } from '../../../reducks/products/types';
 import { useSelector } from '../../../reducks/store';
 import { ProductFirebaseRepository } from '../../../repository/product';
+import { Dialog } from '../../uiParts/Dialog';
 import { addBrTagToLineBreaks, recreateImages } from './hook';
 import { ImageSwiper } from './ImageSwiper';
 import { useStyles } from './style';
@@ -20,6 +21,9 @@ function ProductDetail() {
 
   const [product, setProduct] = useState<ProductForDatabase | null>(null);
 
+  // ダイアログを管理するステート
+  const [FailureDialog, setOpenFailureDialog] = useState(false);
+
   // 商品詳細ページ訪問時に一度だけ実行
   useEffect(() => {
     // 即時実行
@@ -30,13 +34,19 @@ function ProductDetail() {
         const productData = await productRepository.fetch(productId);
         setProduct(productData);
       } catch (error) {
-        window.alert('情報取得に失敗しました。リロードしなおしてください。');
+        setOpenFailureDialog(true);
       }
     })();
   }, []);
 
   return (
     <section className={classes.root}>
+      <Dialog
+        isOpen={FailureDialog}
+        setIsOpen={setOpenFailureDialog}
+        title="⚠エラー"
+        text="情報取得に失敗しました。リロードしなおしてください。"
+      />
       {product && (
         <div className={classes.imageAndDetailGrid}>
           <div className={classes.imageSliderBox}>
