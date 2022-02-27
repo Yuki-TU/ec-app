@@ -51,7 +51,7 @@ export async function uploadImage(
     const newImage = { id: metadata.fullPath, path: downloadUrl };
     setImages((prevState) => [...prevState, newImage]);
   } catch (error) {
-    alert('画像のアップロードに失敗しました。もう一度試してください。');
+    throw new Error('画像のアップロードに失敗しました。');
   }
 }
 
@@ -68,12 +68,13 @@ export async function deleteImage(
     React.SetStateAction<{ id: string; path: string }[]>
   >
 ) {
-  // 削除画像以外を新たな配列に格納しステート更新
-  const newImages = images.filter((image) => image.id !== id);
-  setImages(newImages);
   try {
     // firestrageより画像を削除
     await deleteObject(ref(storage, id));
+    // 削除画像以外を新たな配列に格納しステート更新
+    // firestrageの画像削除が成功してから、ユーザ画面表示の画像を削除する必要がある
+    const newImages = images.filter((image) => image.id !== id);
+    setImages(newImages);
   } catch (error) {
     throw new Error('画像削除に失敗しました');
   }
