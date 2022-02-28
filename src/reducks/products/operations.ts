@@ -81,7 +81,7 @@ export function deleteProduct(id: string) {
       // ストアの商品リストを削除した商品以外の商品リストで更新
       dispatch(deleteProductAction(newProducts));
     } catch (error) {
-      alert('削除に失敗しました。時間を置いてもう一度試してください。');
+      throw new Error('商品情報の削除に失敗しました。');
     }
   };
 }
