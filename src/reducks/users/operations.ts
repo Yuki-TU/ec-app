@@ -51,7 +51,6 @@ export function signUp(username: string, email: string, password: string) {
       }
     } catch (error) {
       if (error instanceof Error) {
-        alert('ユーザ登録に失敗しました。時間を置いてもう一度お試しください。');
         throw new Error(error.message);
       }
     }

@@ -43,6 +43,7 @@ function SignUp() {
 
   // ダイアログを管理するステート
   const [openFailureDialog, setOpenFailureDialog] = useState(false);
+  const [openSignUpFailureDialog, setOpenSignUpFailureDialog] = useState(false);
 
   const inputUserName = useCallback(
     (event) => {
@@ -72,14 +73,29 @@ function SignUp() {
     [setConfirmPassword]
   );
 
+  const handleSignUp = async () => {
+    try {
+      // HACK: awaitが必要ないと言われるが、ないとエラーダイアログ出せないので追加jjjjjkkkjjj
+      await dispatch(signUp(userName, email, password));
+    } catch (error) {
+      setOpenSignUpFailureDialog(true);
+    }
+  };
+
   return (
     <div className={classes.root}>
+      <Dialog
+        isOpen={openSignUpFailureDialog}
+        setIsOpen={setOpenSignUpFailureDialog}
+        title="⚠エラー"
+        text="サインアップに失敗しました。もう一度やり直してください。"
+      />
       <h2 className={classes.title}>アカウント登録</h2>
       <form
         onSubmit={(event) => {
           event.preventDefault();
           if (validatePassword(password, confirmPassword)) {
-            dispatch(signUp(userName, email, password));
+            handleSignUp();
           } else {
             setOpenFailureDialog(true);
           }
