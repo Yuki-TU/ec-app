@@ -66,13 +66,13 @@ export function signIn(email: string, password: string) {
   return async (dispatch: Dispatch<Action>) => {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
+
       // データベースよりユーザ情報取得
       const userRepository = new UserFirebaseRepository();
       const userData = await userRepository.fetchUser(user.uid);
 
       if (!userData) {
-        alert('不具合が発生しました。アカウントを作り直してください。');
-        return;
+        throw new Error('サインインできたが、データベースに値がない');
       }
       dispatch(
         signInAction({
@@ -89,9 +89,6 @@ export function signIn(email: string, password: string) {
       dispatch(push('/'));
     } catch (error) {
       if (error instanceof Error) {
-        alert(
-          '認証に失敗しました。IDとパスワードが正しいかもう一度ご確認ください。'
-        );
         throw new Error(error.message);
       }
     }
