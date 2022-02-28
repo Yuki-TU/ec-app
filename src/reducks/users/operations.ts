@@ -133,7 +133,6 @@ export function listenAuthState() {
       const data = await userRepository.fetchUser(user.uid);
 
       if (!data) {
-        alert('不具合が発生しました。アカウント作成し直してください。');
         throw new Error(`can"t find user data in database`);
       }
       dispatch(
