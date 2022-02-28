@@ -156,15 +156,11 @@ export function listenAuthState() {
  * @returns パスワードリセットメール処理をするコールバック関数
  */
 export function resetPassword(email: string) {
-  return async (dispatch: Dispatch<Action>) => {
+  return async () => {
     try {
       await sendPasswordResetEmail(auth, email);
-      alert(
-        '指定アドレスにパスワードリセットメールを送信しました。ご確認ください。'
-      );
-      dispatch(push('/signin'));
     } catch (error) {
-      alert('不具合が発生しました。時間を置いてもう一度実行してください。');
+      throw new Error('リセットメール送信エラー');
     }
   };
 }
