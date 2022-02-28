@@ -6,6 +6,7 @@ import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signIn } from '../../../reducks/users/operations';
 import { useStyles } from './style';
 import { TextLink } from '../../uiParts/TextLink';
+import { Dialog } from '../../uiParts/Dialog';
 
 /**
  * サインイン画面のコンポーネント
@@ -18,6 +19,10 @@ function SignUp() {
   // ユーザ登録に関する情報ステータス
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // エラーダイアログステート
+  const [openFailureDialog, setOpenFailureDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   /** 入力メールアドレスの更新 */
   const inputEmail = useCallback(
@@ -34,14 +39,41 @@ function SignUp() {
     [setPassword]
   );
 
+  const handleSignIn = async () => {
+    try {
+      await dispatch(signIn(email, password));
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message === 'サインインできたが、データベースに値がない'
+      ) {
+        setErrorMessage(
+          '不具合が発生しました。大変申し訳ございませんが、アカウントを作り直してください。'
+        );
+        setOpenFailureDialog(true);
+        return;
+      }
+      setErrorMessage(
+        '認証に失敗しました。メールアドレスとパスワードが正しいかもう一度ご確認ください。"'
+      );
+      setOpenFailureDialog(true);
+    }
+  };
+
   return (
     <div className={classes.root}>
+      <Dialog
+        isOpen={openFailureDialog}
+        setIsOpen={setOpenFailureDialog}
+        title="⚠エラー"
+        text={errorMessage}
+      />
       <h2 className={classes.title}>サインイン</h2>
       <form
         onSubmit={(event) => {
           // 実際にフォーム送信しないため、以下を追加
           event.preventDefault();
-          dispatch(signIn(email, password));
+          handleSignIn();
         }}
       >
         <TextInput
