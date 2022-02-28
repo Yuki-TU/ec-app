@@ -12,6 +12,7 @@ import type { ProductForDatabase } from '../../../../reducks/products/types';
 import { useStyles } from './style';
 import { deleteProduct } from '../../../../reducks/products/operations';
 import { getThumbnail } from './hook';
+import { Dialog } from '../../../uiParts/Dialog';
 
 /**
  * 商品情報一覧で利用するカードのコンポーネント
@@ -27,6 +28,9 @@ function ProductCard(props: ProductForDatabase) {
   const [isOpeningMenu, setIsOpenMenu] = useState(false);
   /** メニューを表示する位置設定 */
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // ダイアログを管理するステート
+  const [openFailureDialog, setOpenFailureDialog] = useState(false);
 
   const handleClickMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -48,6 +52,12 @@ function ProductCard(props: ProductForDatabase) {
 
   return (
     <Card className={classes.root}>
+      <Dialog
+        isOpen={openFailureDialog}
+        setIsOpen={setOpenFailureDialog}
+        title="⚠エラー"
+        text="情報取得に失敗しました。リロードしなおしてください。"
+      />
       <CardMedia
         image={thumbnail}
         className={classes.media}
@@ -83,8 +93,13 @@ function ProductCard(props: ProductForDatabase) {
             編集する
           </MenuItem>
           <MenuItem
-            onClick={() => {
-              dispatch(deleteProduct(id));
+            onClick={async () => {
+              try {
+                // HACK: awaitが必要ないと言われるが、ないとエラーダイアログ出せないので追加
+                await dispatch(deleteProduct(id));
+              } catch (error) {
+                setOpenFailureDialog(true);
+              }
               handleCloseMenu();
             }}
           >
