@@ -54,7 +54,7 @@ function SignUp() {
         return;
       }
       setErrorMessage(
-        '認証に失敗しました。メールアドレスとパスワードが正しいかもう一度ご確認ください。"'
+        '認証に失敗しました。メールアドレスとパスワードが正しいかもう一度ご確認ください。'
       );
       setOpenFailureDialog(true);
     }
