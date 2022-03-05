@@ -17,7 +17,7 @@ function HeaderMenuAtSignIn() {
   return (
     <>
       <IconButton
-        onClick={() => dispatch(push('/signout'))}
+        onClick={() => dispatch(push('/account'))}
         icon={<PersonIcon />}
         label="アカウント"
       />
