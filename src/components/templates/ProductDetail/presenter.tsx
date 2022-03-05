@@ -59,7 +59,7 @@ function ProductDetail() {
             <h1 className={classes.productName}>{product.name}</h1>
             <p className={classes.productPrice}>
               ¥{product.price.toLocaleString()}
-              <p className={classes.tax}>(税込)</p>
+              <span className={classes.tax}>(税込)</span>
             </p>
             <h1>商品説明</h1>
             <p className={classes.productDescription}>
