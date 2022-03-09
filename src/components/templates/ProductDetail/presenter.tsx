@@ -1,8 +1,18 @@
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { ProductForDatabase } from '../../../reducks/products/types';
 import { useSelector } from '../../../reducks/store';
+import {
+  addFavoriteProduct,
+  removeFavoriteProduct,
+} from '../../../reducks/users/operations';
+import { loadUserId } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
+import { UserFirebaseRepository } from '../../../repository/user';
 import { Dialog } from '../../uiParts/Dialog';
+import { IconButton } from '../../uiParts/IconButton';
 import { addBrTagToLineBreaks, recreateImages } from './hook';
 import { ImageSwiper } from './ImageSwiper';
 import { useStyles } from './style';
@@ -14,15 +24,34 @@ import { useStyles } from './style';
 function ProductDetail() {
   const classes = useStyles();
   const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   // URLより商品id取得
   const path = selector.router.location.pathname;
   const productId = path.split('/product/')[1];
 
+  const userId = loadUserId(selector);
   const [product, setProduct] = useState<ProductForDatabase | null>(null);
-
   // ダイアログを管理するステート
   const [FailureDialog, setOpenFailureDialog] = useState(false);
+  // お気に商品かどうかを保持するステート
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  // HACK: stateを利用しているためuseCallbackは使えない
+  // お気に入り処理
+  const handleFavoriteProduct = () => {
+    if (isFavorite) {
+      // お気に入りだった場合は、お気に入り解除
+      dispatch(removeFavoriteProduct(productId));
+      setIsFavorite((prevState) => !prevState);
+      return;
+    }
+    // お気に入りではなかった場合は、お気に入り登録
+    dispatch(addFavoriteProduct(productId));
+    setIsFavorite((prevState) => !prevState);
+  };
+
+  const favoriteIcon = isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />;
 
   // 商品詳細ページ訪問時に一度だけ実行
   useEffect(() => {
@@ -33,6 +62,12 @@ function ProductDetail() {
         const productRepository = new ProductFirebaseRepository();
         const productData = await productRepository.fetch(productId);
         setProduct(productData);
+
+        // お気に入り商品なのかを判定している
+        const userRepository = new UserFirebaseRepository();
+        const user = await userRepository.fetchUser(userId);
+        const existFavorite = user.favorite_products.includes(productId);
+        setIsFavorite(existFavorite);
       } catch (error) {
         setOpenFailureDialog(true);
       }
@@ -61,6 +96,11 @@ function ProductDetail() {
               ¥{product.price.toLocaleString()}
               <span className={classes.tax}>(税込)</span>
             </p>
+            <IconButton
+              label="お気に入り"
+              onClick={handleFavoriteProduct}
+              icon={favoriteIcon}
+            />
             <h1>商品説明</h1>
             <p className={classes.productDescription}>
               {addBrTagToLineBreaks(product.description)}
