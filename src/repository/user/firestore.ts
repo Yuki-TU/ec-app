@@ -1,5 +1,11 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { UserForDatabase } from '../../reducks/users/types';
+import {
+  arrayRemove,
+  arrayUnion,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
+import type { UserForDatabase } from '../../reducks/users/types';
 import { db } from '../../firebase';
 import { IUserRepository } from './interface';
 
@@ -11,6 +17,44 @@ class UserFirebaseRepository implements IUserRepository {
 
   constructor() {
     this.collection = 'users';
+  }
+
+  /**
+   * 指定ユーザに対してお気に入りの商品を追加
+   * @param userId ユーザ
+   * @param product お気に入り登録したい商品id
+   */
+  async addFavoriteProduct(userId: string, product: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, userId),
+        { favorite_products: arrayUnion(product) },
+        { merge: true }
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
+  }
+
+  /**
+   * 指定ユーザに対してお気に入り商品を削除
+   * @param userId ユーザid
+   * @param product お気に入り解除したい商品id
+   */
+  async removeFavoriteProduct(userId: string, product: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, userId),
+        { favorite_products: arrayRemove(product) },
+        { merge: true }
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
   }
 
   /**
@@ -41,7 +85,7 @@ class UserFirebaseRepository implements IUserRepository {
 
     try {
       // データベースのusersコレクションに、ユーザ登録でランダムに作成されたユーザidをキーに各ユーザ情報を登録
-      await setDoc(doc(db, this.collection, key), user);
+      await setDoc(doc(db, this.collection, key), user, { merge: true });
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
