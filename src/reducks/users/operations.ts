@@ -41,6 +41,7 @@ export function signUp(username: string, email: string, password: string) {
           uid: user.uid,
           updated_at: timestamp,
           username,
+          favorite_products: [],
         };
         // ユーザー情報をデータベースに登録
         const userRepository = new UserFirebaseRepository();
