@@ -1,5 +1,5 @@
-import { Dispatch } from 'react';
 import { Action } from '@reduxjs/toolkit';
+import { push } from 'connected-react-router';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -7,11 +7,44 @@ import {
   signInWithEmailAndPassword,
   signOut as signOutInFirebase,
 } from 'firebase/auth';
-import { push } from 'connected-react-router';
+import { Dispatch } from 'react';
 import { auth, firebaseTimestamp } from '../../firebase/index';
-import { signInAction, signOutAction } from './update';
 import { UserFirebaseRepository } from '../../repository/user';
+import { RootState } from '../store';
+import { signInAction, signOutAction } from './update';
 
+/**
+ * お気に入り登録処理をするコールバック関数の作成
+ * @param productId 登録したい商品id
+ * @returns コールバック
+ */
+export function addFavoriteProduct(productId: string) {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const userId = getState().user.uid;
+    const repository = new UserFirebaseRepository();
+    try {
+      await repository.addFavoriteProduct(userId, productId);
+    } catch (error) {
+      throw new Error('お気に入り登録失敗');
+    }
+  };
+}
+/**
+ * お気に入り登録解除をするコールバック関数の作成
+ * @param productId 登録解除したい商品id
+ * @returns コールバック
+ */
+export function removeFavoriteProduct(productId: string) {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const userId = getState().user.uid;
+    const repository = new UserFirebaseRepository();
+    try {
+      await repository.removeFavoriteProduct(userId, productId);
+    } catch (error) {
+      throw new Error('お気に入り登録解除失敗');
+    }
+  };
+}
 /**
  * アカウント作成とアカウント情報をデータベースに登録するコールバック関数の定義
  * @param username 登録したいユーザー情報
