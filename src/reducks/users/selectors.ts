@@ -13,6 +13,10 @@ export const loadUserName = createSelector(
   [userSelector],
   (state) => state.username
 );
+
+/** ユーザidの取得 */
+export const loadUserId = createSelector([userSelector], (state) => state.uid);
+
 /** サインインフラグの取得 */
 export const loadSignedIn = createSelector(
   [userSelector],
