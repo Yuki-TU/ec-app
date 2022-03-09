@@ -21,4 +21,6 @@ export type UserForDatabase = {
   uid: string;
   updated_at: Timestamp;
   username: string;
+  /** お気に入り商品id一覧 */
+  favorite_products: string[];
 };
