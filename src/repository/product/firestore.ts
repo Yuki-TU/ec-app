@@ -7,9 +7,10 @@ import {
   orderBy,
   query,
   setDoc,
+  where,
 } from 'firebase/firestore';
-import { ProductForDatabase } from '../../reducks/products/types';
 import { db } from '../../firebase';
+import { ProductForDatabase } from '../../reducks/products/types';
 import type { IProductRepository } from './interface';
 
 /**
@@ -51,6 +52,27 @@ class ProductFirebaseRepository implements IProductRepository {
         throw new Error(error.message);
       }
       throw new Error('failed to fetch firestore');
+    }
+  }
+
+  /**
+   * 商品idより商品リストの検索
+   * @param ids 検索したい商品のidリスト
+   * @returns 検索結果の商品情報リスト
+   */
+  async findByIds(ids: string[]) {
+    const productsRef = collection(db, this.collection);
+    const queryKey = query(productsRef, where('id', 'in', ids));
+    const products: ProductForDatabase[] = [];
+
+    try {
+      const querySnapshot = await getDocs(queryKey);
+      querySnapshot.forEach((product) => {
+        products.push(product.data() as ProductForDatabase);
+      });
+      return products;
+    } catch (error) {
+      throw new Error('検索失敗');
     }
   }
 

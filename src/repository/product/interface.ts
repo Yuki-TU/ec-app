@@ -4,5 +4,6 @@ import { ProductForDatabase } from '../../reducks/products/types';
 export interface IProductRepository {
   delete(id: string): Promise<void>;
   fetch(id: string): Promise<ProductForDatabase>;
+  findByIds(ids: string[]): Promise<ProductForDatabase[]>;
   save(user: ProductForDatabase): void;
 }
