@@ -22,3 +22,8 @@ export const loadSignedIn = createSelector(
   [userSelector],
   (state) => state.isSignedIn
 );
+/** お気に入り商品リストの取得 */
+export const loadFavoriteProducts = createSelector(
+  [userSelector],
+  (state) => state.favoriteProducts
+);
