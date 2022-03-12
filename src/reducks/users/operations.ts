@@ -117,6 +117,7 @@ export function signIn(email: string, password: string) {
           role: userData.role,
           uid: user.uid,
           username: userData.username,
+          favoriteProducts: userData.favorite_products,
         })
       );
       // サインインしたらトップページへ遷移
@@ -171,10 +172,11 @@ export function listenAuthState() {
           customer_id: data.customer_id,
           email: data.email,
           isSignedIn: true,
-          payment_method_id: user.uid,
+          payment_method_id: '',
           role: data.role,
           uid: user.uid,
           username: data.username,
+          favoriteProducts: data.favorite_products,
         })
       );
     });

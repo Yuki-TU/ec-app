@@ -9,6 +9,7 @@ export type User = {
   payment_method_id: string;
   uid: string;
   username: string;
+  favoriteProducts: string[];
 };
 
 /** データベースで保存するユーザ情報の型 */

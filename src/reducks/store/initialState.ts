@@ -12,6 +12,7 @@ export const initialUserState: User = {
   role: 'customer',
   uid: '',
   username: '',
+  favoriteProducts: [],
 };
 
 /** 商品情報の初期化 */
