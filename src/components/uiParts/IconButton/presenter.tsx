@@ -12,7 +12,7 @@ export type IconProps = {
   /** バッジカウンタ数 */
   badgeContent?: number;
   /** 表示位置のための参照 */
-  ref?: React.RefObject<HTMLButtonElement> | null | undefined;
+  reference?: React.RefObject<HTMLButtonElement> | null | undefined;
 };
 /**
  * アイコンブタンコンポーネント
@@ -24,12 +24,12 @@ function IconButton({
   icon,
   onClick,
   badgeContent = 0,
-  ref = undefined,
+  reference = undefined,
 }: IconProps) {
   const classes = useStyles();
 
   return (
-    <MuiIconButton onClick={onClick} ref={ref}>
+    <MuiIconButton onClick={onClick} ref={reference}>
       <div className={classes.icon}>
         <Badge badgeContent={badgeContent} color="secondary">
           {icon}
