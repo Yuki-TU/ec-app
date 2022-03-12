@@ -23,6 +23,7 @@ class UserFirebaseRepository implements IUserRepository {
    * 指定ユーザに対してお気に入りの商品を追加
    * @param userId ユーザ
    * @param product お気に入り登録したい商品id
+   * @returns 更新されたお気に入り商品リスト
    */
   async addFavoriteProduct(userId: string, product: string) {
     try {
@@ -31,10 +32,14 @@ class UserFirebaseRepository implements IUserRepository {
         { favorite_products: arrayUnion(product) },
         { merge: true }
       );
+      // 更新された商品リストを取得し、返却
+      const user = await this.fetchUser(userId);
+      return user.favorite_products;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+      throw new Error('お気に入り登録失敗');
     }
   }
 
@@ -42,6 +47,7 @@ class UserFirebaseRepository implements IUserRepository {
    * 指定ユーザに対してお気に入り商品を削除
    * @param userId ユーザid
    * @param product お気に入り解除したい商品id
+   * @returns 更新されたお気に入り商品リスト
    */
   async removeFavoriteProduct(userId: string, product: string) {
     try {
@@ -50,10 +56,13 @@ class UserFirebaseRepository implements IUserRepository {
         { favorite_products: arrayRemove(product) },
         { merge: true }
       );
+      const user = await this.fetchUser(userId);
+      return user.favorite_products;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+      throw new Error('お気に入り解除失敗');
     }
   }
 
