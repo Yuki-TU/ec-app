@@ -1,13 +1,12 @@
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Timestamp } from 'firebase/firestore';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { render, screen } from '@testing-library/react';
-import { Timestamp } from 'firebase/firestore';
-import userEvent from '@testing-library/user-event';
-
-import '@testing-library/jest-dom';
-import { useStyles } from './style';
 import { ProductCard } from '.';
 import noImage from '../../../../assets/images/no_image.png';
+import { useStyles } from './style';
 
 // スタイルを指定するuseStyles関数はモック化
 jest.mock('./style');

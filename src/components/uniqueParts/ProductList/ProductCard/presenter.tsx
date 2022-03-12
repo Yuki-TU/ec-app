@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
 import { MoreVert } from '@material-ui/icons';
 import { push } from 'connected-react-router';
-
-import type { ProductForDatabase } from '../../../../reducks/products/types';
-import { useStyles } from './style';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { deleteProduct } from '../../../../reducks/products/operations';
-import { getThumbnail } from './hook';
+import type { ProductForDatabase } from '../../../../reducks/products/types';
 import { Dialog } from '../../../uiParts/Dialog';
+import { getThumbnail } from './hook';
+import { useStyles } from './style';
 
 /**
  * 商品情報一覧で利用するカードのコンポーネント
@@ -24,11 +23,10 @@ function ProductCard(props: ProductForDatabase) {
   const dispatch = useDispatch();
   const { images, name, price, id } = props;
 
-  /** メニュー表示フラグ */
+  // メニュー表示フラグ
   const [isOpeningMenu, setIsOpenMenu] = useState(false);
-  /** メニューを表示する位置設定 */
+  // メニューを表示する位置設定
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
   // ダイアログを管理するステート
   const [openFailureDialog, setOpenFailureDialog] = useState(false);
 
