@@ -4,6 +4,6 @@ import type { UserForDatabase } from '../../reducks/users/types';
 export interface IUserRepository {
   fetchUser(id: string): Promise<UserForDatabase>;
   saveUser(user: UserForDatabase): void;
-  addFavoriteProduct(userId: string, product: string): Promise<void>;
-  removeFavoriteProduct(userId: string, product: string): Promise<void>;
+  addFavoriteProduct(userId: string, product: string): Promise<string[]>;
+  removeFavoriteProduct(userId: string, product: string): Promise<string[]>;
 }
