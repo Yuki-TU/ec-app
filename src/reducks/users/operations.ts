@@ -11,7 +11,11 @@ import { Dispatch } from 'react';
 import { auth, firebaseTimestamp } from '../../firebase/index';
 import { UserFirebaseRepository } from '../../repository/user';
 import { RootState } from '../store';
-import { signInAction, signOutAction } from './update';
+import {
+  signInAction,
+  signOutAction,
+  updateFavoriteProductAction,
+} from './update';
 
 /**
  * お気に入り登録処理をするコールバック関数の作成
@@ -23,7 +27,11 @@ export function addFavoriteProduct(productId: string) {
     const userId = getState().user.uid;
     const repository = new UserFirebaseRepository();
     try {
-      await repository.addFavoriteProduct(userId, productId);
+      const updatedFavoriteProducts = await repository.addFavoriteProduct(
+        userId,
+        productId
+      );
+      dispatch(updateFavoriteProductAction(updatedFavoriteProducts));
     } catch (error) {
       throw new Error('お気に入り登録失敗');
     }
@@ -39,7 +47,11 @@ export function removeFavoriteProduct(productId: string) {
     const userId = getState().user.uid;
     const repository = new UserFirebaseRepository();
     try {
-      await repository.removeFavoriteProduct(userId, productId);
+      const updatedFavoriteProducts = await repository.removeFavoriteProduct(
+        userId,
+        productId
+      );
+      dispatch(updateFavoriteProductAction(updatedFavoriteProducts));
     } catch (error) {
       throw new Error('お気に入り登録解除失敗');
     }
