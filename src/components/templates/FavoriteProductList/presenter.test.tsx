@@ -29,27 +29,23 @@ describe('FavoriteProductListコンポーネントはお気に入り商品一覧
     mockUseStyles.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
     mockLoadFavoriteProducts.mockReturnValue([]);
-    mockProductFirebaseRepository.mockImplementationOnce(() => {
-      return {
-        findByIds: () => {
-          return {
-            name: '',
-            description: '',
-            category: '',
-            gender: '',
-            price: 0,
+    mockProductFirebaseRepository.mockImplementationOnce(() => ({
+      findByIds: () => ({
+        name: '',
+        description: '',
+        category: '',
+        gender: '',
+        price: 0,
+        id: '',
+        images: [
+          {
             id: '',
-            images: [
-              {
-                id: '',
-                path: '',
-              },
-            ],
-            updated_at: '',
-          };
-        },
-      };
-    });
+            path: '',
+          },
+        ],
+        updated_at: '',
+      }),
+    }));
 
     waitFor(() => {
       render(<FavoriteProductList />);
@@ -64,27 +60,23 @@ describe('FavoriteProductListコンポーネントはお気に入り商品一覧
     mockUseStyles.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
     mockLoadFavoriteProducts.mockReturnValue([]);
-    mockProductFirebaseRepository.mockImplementationOnce(() => {
-      return {
-        findByIds: () => {
-          return {
-            name: '',
-            description: '',
-            category: '',
-            gender: '',
-            price: 0,
+    mockProductFirebaseRepository.mockImplementationOnce(() => ({
+      findByIds: () => ({
+        name: '',
+        description: '',
+        category: '',
+        gender: '',
+        price: 0,
+        id: '',
+        images: [
+          {
             id: '',
-            images: [
-              {
-                id: '',
-                path: '',
-              },
-            ],
-            updated_at: '',
-          };
-        },
-      };
-    });
+            path: '',
+          },
+        ],
+        updated_at: '',
+      }),
+    }));
 
     waitFor(() => {
       render(<FavoriteProductList />);

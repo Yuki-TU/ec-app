@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Menu } from '.';
+
+// HACK: テストでは、anyを許可
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 
 describe('Menuコンポーネントは、メニューを表示する', () => {
   test('openMenuがtrueの時は、メニューを表示する', () => {
