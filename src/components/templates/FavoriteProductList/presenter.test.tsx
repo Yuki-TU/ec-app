@@ -8,10 +8,13 @@ import { ProductFirebaseRepository } from '../../../repository/product';
 import { useStyles } from './style';
 
 // モジュールのモック化
+jest.mock('connected-react-router', () => jest.fn());
+jest.mock('react-redux');
 jest.mock('./style');
 jest.mock('../../../reducks/users/selectors');
 jest.mock('../../../reducks/store');
 jest.mock('../../../repository/product');
+jest.mock('../../../firebase', () => {});
 
 // const mockUseDispatch = useDispatch as jest.Mock;
 const mockUseStyles = useStyles as jest.Mock;
