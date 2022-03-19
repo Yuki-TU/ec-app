@@ -76,7 +76,7 @@ function ProductEdit() {
     [setGender]
   );
   useEffect(() => {
-    const setProductStateForPage = async () => {
+    (async () => {
       // 商品編集ページのの場合、商品情報を取得
       const productRepository = new ProductFirebaseRepository();
       const response = await productRepository.fetch(productId);
@@ -88,8 +88,7 @@ function ProductEdit() {
       setGender(response.gender);
       setProductPrice(String(response.price));
       setImages(response.images);
-    };
-    setProductStateForPage();
+    })();
   }, [productId]);
 
   return (
