@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteProduct } from '../../../../reducks/products/operations';
 import type { ProductForDatabase } from '../../../../reducks/products/types';
-import { Dialog } from '../../../uiParts/Dialog';
+import { Dialog } from '../../Dialog';
 import { getThumbnail } from './hook';
 import { useStyles } from './style';
 

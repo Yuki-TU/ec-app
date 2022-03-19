@@ -4,7 +4,7 @@ import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import { useStyles } from './style';
 import { deleteImage, uploadImage } from './hook';
 import { ImagePreview } from '../../../uiParts/ImagePreview';
-import { Dialog } from '../../../uiParts/Dialog';
+import { Dialog } from '../../../uniqueParts/Dialog';
 
 /** 引数の型定義 */
 type ImageAddAreaProps = {

@@ -5,7 +5,7 @@ import { TextInput } from '../../uiParts/TextInput';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { resetPassword } from '../../../reducks/users/operations';
 import { useStyles } from './style';
-import { Dialog } from '../../uiParts/Dialog';
+import { Dialog } from '../../uniqueParts/Dialog';
 
 /**
  * パスワードリセット画面のコンポーネント、
