@@ -1,14 +1,14 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import { PasswordReset } from './components/templates/PasswordReset';
-import { SignUp } from './components/templates/SignUp';
-import { SignIn } from './components/templates/SignIn';
-import { Account } from './components/templates/Account';
+import { PasswordReset } from './components/pages/PasswordReset';
+import { SignUp } from './components/pages/SignUp';
+import { SignIn } from './components/pages/SignIn';
+import { Account } from './components/pages/Account';
 import Auth from './Auth';
-import { ProductEdit } from './components/templates/ProductEdit';
-import { AllProductList } from './components/templates/AllProductList';
-import { ProductDetail } from './components/templates/ProductDetail';
-import { FavoriteProductList } from './components/templates/FavoriteProductList';
+import { ProductEdit } from './components/pages/ProductEdit';
+import { AllProductList } from './components/pages/AllProductList';
+import { ProductDetail } from './components/pages/ProductDetail';
+import { FavoriteProductList } from './components/pages/FavoriteProductList';
 
 /**
  * メインボディのルーティングを実施、
