@@ -6,7 +6,7 @@ import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signIn } from '../../../reducks/users/operations';
 import { useStyles } from './style';
 import { TextLink } from '../../uiParts/TextLink';
-import { Dialog } from '../../uiParts/Dialog';
+import { Dialog } from '../../uniqueParts/Dialog';
 
 /**
  * サインイン画面のコンポーネント

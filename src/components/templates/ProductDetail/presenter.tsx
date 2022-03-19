@@ -11,7 +11,7 @@ import {
 import { loadUserId } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
 import { UserFirebaseRepository } from '../../../repository/user';
-import { Dialog } from '../../uiParts/Dialog';
+import { Dialog } from '../../uniqueParts/Dialog';
 import { IconButton } from '../../uiParts/IconButton';
 import { addBrTagToLineBreaks, recreateImages } from './hook';
 import { ImageSwiper } from './ImageSwiper';

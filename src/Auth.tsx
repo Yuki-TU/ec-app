@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { loadSignedIn } from './reducks/users/selectors';
 import { listenAuthState } from './reducks/users/operations';
 import { useSelector } from './reducks/store';
-import { Dialog } from './components/uiParts/Dialog';
+import { Dialog } from './components/uniqueParts/Dialog';
 
 /**
  * サインインであれば子要素を表示し、そうでなければ子要素は表示しない

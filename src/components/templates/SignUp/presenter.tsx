@@ -7,7 +7,7 @@ import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { signUp } from '../../../reducks/users/operations';
 import { validatePassword } from './hook';
 import { TextLink } from '../../uiParts/TextLink';
-import { Dialog } from '../../uiParts/Dialog';
+import { Dialog } from '../../uniqueParts/Dialog';
 
 /** スタイル */
 const useStyles = makeStyles({
