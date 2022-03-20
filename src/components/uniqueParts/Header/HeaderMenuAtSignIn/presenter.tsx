@@ -53,7 +53,7 @@ function HeaderMenuAtSignIn() {
         setOpenMenu={setOpenAccountMenu}
       />
       <IconButton
-        onClick={() => dispatch(push('/product/edit'))}
+        onClick={() => dispatch(push('/edit-product'))}
         icon={<PhotoCameraIcon />}
         label="出品"
       />

@@ -84,7 +84,7 @@ function ProductCard(props: ProductForDatabase) {
         >
           <MenuItem
             onClick={() => {
-              dispatch(push(`/product/edit/${id}`));
+              dispatch(push(`/edit-product/${id}`));
               handleCloseMenu();
             }}
           >

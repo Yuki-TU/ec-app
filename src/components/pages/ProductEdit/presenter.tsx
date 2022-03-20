@@ -25,7 +25,7 @@ function ProductEdit() {
   const [images, setImages] = useState<{ id: string; path: string }[]>([]);
 
   // 商品変種ページの場合、URLより商品idを取得する
-  const productId = window.location.pathname.split('/product/edit/')[1];
+  const productId = window.location.pathname.split('/edit-product/')[1];
 
   // プルダウン選択に必要なデータ定義
   const categories = [
