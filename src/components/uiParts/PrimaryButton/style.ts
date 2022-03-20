@@ -12,7 +12,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: 16,
       height: 48,
       marginBottom: 16,
-      width: 256,
+      width: '100%',
       '&:hover': {
         backgroundColor: theme.palette.primary.dark,
       },
