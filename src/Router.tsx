@@ -31,7 +31,7 @@ function Router() {
             path="/favorite-products"
             component={FavoriteProductList}
           />
-          <Route path="/product/edit(/:id)?" component={ProductEdit} />
+          <Route path="/edit-product(/:id)?" component={ProductEdit} />
         </>
       </Auth>
     </Switch>
