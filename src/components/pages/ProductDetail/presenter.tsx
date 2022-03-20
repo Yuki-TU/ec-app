@@ -1,5 +1,6 @@
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { push } from 'connected-react-router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ProductForDatabase } from '../../../reducks/products/types';
@@ -11,8 +12,9 @@ import {
 import { loadUserId } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
 import { UserFirebaseRepository } from '../../../repository/user';
-import { Dialog } from '../../uniqueParts/Dialog';
 import { IconButton } from '../../uiParts/IconButton';
+import { PrimaryButton } from '../../uiParts/PrimaryButton';
+import { Dialog } from '../../uniqueParts/Dialog';
 import { addBrTagToLineBreaks, recreateImages } from './hook';
 import { ImageSwiper } from './ImageSwiper';
 import { useStyles } from './style';
@@ -101,6 +103,15 @@ function ProductDetail() {
               onClick={handleFavoriteProduct}
               icon={favoriteIcon}
             />
+            <div className={classes.editButton}>
+              <PrimaryButton
+                label="商品の編集"
+                onClick={() => {
+                  dispatch(push(`/edit-product/${product.id}`));
+                }}
+                type="button"
+              />
+            </div>
             <h1>商品説明</h1>
             <p className={classes.productDescription}>
               {addBrTagToLineBreaks(product.description)}

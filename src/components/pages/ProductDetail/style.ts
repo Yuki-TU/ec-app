@@ -72,4 +72,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '1rem',
     marginLeft: '3rem',
   },
+  editButton: {
+    margin: '0 auto',
+  },
 }));
