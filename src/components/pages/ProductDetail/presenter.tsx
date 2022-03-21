@@ -33,7 +33,7 @@ function ProductDetail() {
   const productId = path.split('/product/')[1];
 
   const userId = loadUserId(selector);
-  const [product, setProduct] = useState<ProductForDatabase | null>(null);
+  const [product, setProduct] = useState<ProductForDatabase>();
   // ダイアログを管理するステート
   const [FailureDialog, setOpenFailureDialog] = useState(false);
   // お気に商品かどうかを保持するステート
@@ -54,6 +54,8 @@ function ProductDetail() {
   };
 
   const favoriteIcon = isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />;
+  // 商品オーナーとログインユーザが同じ場合、編集ボタン表示
+  const canEditProduct = userId === product?.owner;
 
   // 商品詳細ページ訪問時に一度だけ実行
   useEffect(() => {
@@ -103,15 +105,17 @@ function ProductDetail() {
               onClick={handleFavoriteProduct}
               icon={favoriteIcon}
             />
-            <div className={classes.editButton}>
-              <PrimaryButton
-                label="商品の編集"
-                onClick={() => {
-                  dispatch(push(`/edit-product/${product.id}`));
-                }}
-                type="button"
-              />
-            </div>
+            {canEditProduct && (
+              <div className={classes.editButton}>
+                <PrimaryButton
+                  label="商品の編集"
+                  onClick={() => {
+                    dispatch(push(`/edit-product/${product.id}`));
+                  }}
+                  type="button"
+                />
+              </div>
+            )}
             <h1>商品説明</h1>
             <p className={classes.productDescription}>
               {addBrTagToLineBreaks(product.description)}

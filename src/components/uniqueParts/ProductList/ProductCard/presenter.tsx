@@ -9,6 +9,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteProduct } from '../../../../reducks/products/operations';
 import type { ProductForDatabase } from '../../../../reducks/products/types';
+import { useSelector } from '../../../../reducks/store';
+import { loadUserId } from '../../../../reducks/users/selectors';
 import { Dialog } from '../../Dialog';
 import { getThumbnail } from './hook';
 import { useStyles } from './style';
@@ -20,8 +22,10 @@ import { useStyles } from './style';
  */
 function ProductCard(props: ProductForDatabase) {
   const classes = useStyles();
+  const selector = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { images, name, price, id } = props;
+  const { images, name, price, id, owner } = props;
+  const userId = loadUserId(selector);
 
   // メニュー表示フラグ
   const [isOpeningMenu, setIsOpenMenu] = useState(false);
@@ -47,6 +51,8 @@ function ProductCard(props: ProductForDatabase) {
   const reshapePrime = price.toLocaleString();
   // 画像登録があれば、最初の画像をサムネイルにする
   const thumbnail = getThumbnail(images);
+  // 商品オーナーとログインユーザが同じなら編集ボタンを表示
+  const canEditProduct = owner === userId;
 
   return (
     <Card className={classes.root}>
@@ -70,40 +76,44 @@ function ProductCard(props: ProductForDatabase) {
             ¥{reshapePrime}
           </Typography>
         </div>
-        <IconButton
-          className={classes.icon}
-          onClick={(e) => handleClickMenu(e)}
-        >
-          <MoreVert />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl} // 表示位置の設定
-          keepMounted
-          open={isOpeningMenu}
-          onClose={handleCloseMenu}
-        >
-          <MenuItem
-            onClick={() => {
-              dispatch(push(`/edit-product/${id}`));
-              handleCloseMenu();
-            }}
-          >
-            編集する
-          </MenuItem>
-          <MenuItem
-            onClick={async () => {
-              try {
-                // HACK: awaitが必要ないと言われるが、ないとエラーダイアログ出せないので追加
-                await dispatch(deleteProduct(id));
-              } catch (error) {
-                setOpenFailureDialog(true);
-              }
-              handleCloseMenu();
-            }}
-          >
-            削除する
-          </MenuItem>
-        </Menu>
+        {canEditProduct && (
+          <>
+            <IconButton
+              className={classes.icon}
+              onClick={(e) => handleClickMenu(e)}
+            >
+              <MoreVert />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl} // 表示位置の設定
+              keepMounted
+              open={isOpeningMenu}
+              onClose={handleCloseMenu}
+            >
+              <MenuItem
+                onClick={() => {
+                  dispatch(push(`/edit-product/${id}`));
+                  handleCloseMenu();
+                }}
+              >
+                編集する
+              </MenuItem>
+              <MenuItem
+                onClick={async () => {
+                  try {
+                    // HACK: awaitが必要ないと言われるが、ないとエラーダイアログ出せないので追加
+                    await dispatch(deleteProduct(id));
+                  } catch (error) {
+                    setOpenFailureDialog(true);
+                  }
+                  handleCloseMenu();
+                }}
+              >
+                削除する
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </CardContent>
     </Card>
   );
