@@ -16,6 +16,7 @@ import { RootState } from '../store';
  * @param category 商品カテゴリー
  * @param gender 性別
  * @param price 値段
+ * @param owner 商品出品者のユーザid
  * @returns 商品登録するコールバック
  */
 export function saveProduct(
@@ -25,7 +26,8 @@ export function saveProduct(
   category: string,
   gender: string,
   images: { id: string; path: string }[],
-  price: string
+  price: string,
+  owner: string
 ) {
   return async (dispatch: Dispatch<Action>) => {
     const nowTimeStamp = firebaseTimestamp.now();
@@ -48,6 +50,7 @@ export function saveProduct(
       name,
       price: parseInt(price, 10),
       updated_at: nowTimeStamp,
+      owner,
     };
     try {
       const productRepository = new ProductFirebaseRepository();

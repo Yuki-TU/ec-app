@@ -7,6 +7,8 @@ import { TextInput } from '../../uiParts/TextInput';
 import { useStyles } from './style';
 import { ImageAddArea } from './ImageAddArea';
 import { ProductFirebaseRepository } from '../../../repository/product';
+import { useSelector } from '../../../reducks/store';
+import { loadUserId } from '../../../reducks/users/selectors';
 
 /**
  * 商品編集をする画面の古音ポーネンと
@@ -15,6 +17,8 @@ import { ProductFirebaseRepository } from '../../../repository/product';
 function ProductEdit() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const selector = useSelector((state) => state);
+  const userId = loadUserId(selector);
 
   // 商品情報に必要なステートの定義
   const [productName, setProductName] = useState('');
@@ -105,7 +109,8 @@ function ProductEdit() {
               category,
               gender,
               images,
-              productPrice
+              productPrice,
+              userId
             )
           );
         }}
