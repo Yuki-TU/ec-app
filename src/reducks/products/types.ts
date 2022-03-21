@@ -18,6 +18,8 @@ export type ProductForDatabase = {
   images: { id: string; path: string }[];
   /** 更新日 */
   updated_at: Timestamp;
+  /** プロダクト出品者のユーザid */
+  owner: string;
 };
 
 /** reduxで扱う商品情報一覧の型 */
