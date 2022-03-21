@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 describe('FavoriteProductListコンポーネントはお気に入り商品一覧を表示する', () => {
-  test('お気に入り商品がない場合は「お気に入りした商品がありません」と表示する', () => {
+  test('お気に入り商品がない場合は「お気に入りした商品がありません」と表示する', async () => {
     // モックの帰り値を指定
     mockUseStyles.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
@@ -50,15 +50,15 @@ describe('FavoriteProductListコンポーネントはお気に入り商品一覧
       }),
     }));
 
-    waitFor(() => {
+    await waitFor(() => {
       render(<FavoriteProductList />);
-      expect(
-        screen.getByText('お気に入りした商品がありません')
-      ).toBeInTheDocument();
     });
+    expect(
+      screen.getByText('お気に入りした商品がありません')
+    ).toBeInTheDocument();
   });
   test.skip('お気に入り商品がある場合は商品リスト一覧を表示する', () => {});
-  test('ヘッダーテキストに「お気に入り商品」と表示する', () => {
+  test('ヘッダーテキストに「お気に入り商品」と表示する', async () => {
     // モックの帰り値を指定
     mockUseStyles.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
@@ -81,9 +81,9 @@ describe('FavoriteProductListコンポーネントはお気に入り商品一覧
       }),
     }));
 
-    waitFor(() => {
+    await waitFor(() => {
       render(<FavoriteProductList />);
-      expect(screen.getByText('お気に入り商品')).toBeInTheDocument();
     });
+    expect(screen.getByText('お気に入り商品')).toBeInTheDocument();
   });
 });
