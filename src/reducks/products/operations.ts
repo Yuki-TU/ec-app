@@ -8,6 +8,10 @@ import { ProductFirebaseRepository } from '../../repository/product';
 import { deleteProductAction, fetchProductsAction } from './updates';
 import { ProductForDatabase } from './types';
 import { RootState } from '../store';
+import {
+  addExhibitedProduct,
+  removeExhibitedProduct,
+} from '../users/operations';
 
 /**
  * 商品登録登録し、成功したらホームに戻るコールバックの定義
@@ -29,7 +33,7 @@ export function saveProduct(
   price: string,
   owner: string
 ) {
-  return async (dispatch: Dispatch<Action>) => {
+  return async (dispatch: Dispatch<unknown>) => {
     const nowTimeStamp = firebaseTimestamp.now();
     // 編集する商品のproductidを代入
     let id = productId;
@@ -55,6 +59,10 @@ export function saveProduct(
     try {
       const productRepository = new ProductFirebaseRepository();
       await productRepository.save(savedData);
+
+      // 商品追加をユーザ管理
+      dispatch(addExhibitedProduct(id));
+
       // 保存が成功したらホームへ
       dispatch(push('/'));
     } catch (error) {
@@ -69,11 +77,14 @@ export function saveProduct(
  * @returns 商品削除するコールバック
  */
 export function deleteProduct(id: string) {
-  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+  return async (dispatch: Dispatch<unknown>, getState: () => RootState) => {
     try {
       // データベースの商品を削除
       const productRepository = new ProductFirebaseRepository();
       await productRepository.delete(id);
+
+      // 商品削除をユーザ管理
+      dispatch(removeExhibitedProduct(id));
 
       // 削除した商品以外の商品リストを作成
       const prevProducts = getState().products.list;
