@@ -9,9 +9,11 @@ import {
   addFavoriteProduct,
   removeFavoriteProduct,
 } from '../../../reducks/users/operations';
-import { loadUserId } from '../../../reducks/users/selectors';
+import {
+  loadFavoriteProducts,
+  loadUserId,
+} from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
-import { UserFirebaseRepository } from '../../../repository/user';
 import { IconButton } from '../../uiParts/IconButton';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
 import { Dialog } from '../../uniqueParts/Dialog';
@@ -52,7 +54,7 @@ function ProductDetail() {
     dispatch(addFavoriteProduct(productId));
     setIsFavorite((prevState) => !prevState);
   };
-
+  // お気に入りの場合は、無理潰されたハード、お気に入りではない場合枠組みのハード
   const favoriteIcon = isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />;
   // 商品オーナーとログインユーザが同じ場合、編集ボタン表示
   const canEditProduct = userId === product?.owner;
@@ -66,16 +68,14 @@ function ProductDetail() {
         const productRepository = new ProductFirebaseRepository();
         const productData = await productRepository.fetch(productId);
         setProduct(productData);
-
-        // お気に入り商品なのかを判定している
-        const userRepository = new UserFirebaseRepository();
-        const user = await userRepository.fetchUser(userId);
-        const existFavorite = user.favorite_products.includes(productId);
-        setIsFavorite(existFavorite);
       } catch (error) {
         setOpenFailureDialog(true);
       }
     })();
+    // お気に入り商品なのかを判定している
+    const favoriteProductIds = loadFavoriteProducts(selector);
+    const existFavorite = favoriteProductIds.includes(productId);
+    setIsFavorite(existFavorite);
   }, []);
 
   return (
