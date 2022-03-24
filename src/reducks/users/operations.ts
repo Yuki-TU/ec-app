@@ -14,9 +14,53 @@ import { RootState } from '../store';
 import {
   signInAction,
   signOutAction,
+  updateExhibitedProductAction,
   updateFavoriteProductAction,
 } from './update';
 
+/**
+ * 自身で出品商品を管理処理をするコールバック関数の作成
+ * @param productId 出品商品id
+ * @returns コールバック
+ */
+export function addExhibitedProduct(productId: string) {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const userId = getState().user.uid;
+    const repository = new UserFirebaseRepository();
+
+    try {
+      const updatedExhibitedProducts = await repository.addExhibitedProduct(
+        userId,
+        productId
+      );
+      dispatch(updateExhibitedProductAction(updatedExhibitedProducts));
+    } catch (error) {
+      throw new Error('お気に入り登録失敗');
+    }
+  };
+}
+
+/**
+ * 出品商品を自身の管理から削除するコールバック関数の作成
+ * @param productId 削除した商品id
+ * @returns コールバック
+ */
+export function removeExhibitedProduct(productId: string) {
+  return async (dispatch: Dispatch<Action>, getState: () => RootState) => {
+    const userId = getState().user.uid;
+    const repository = new UserFirebaseRepository();
+
+    try {
+      const updatedExhibitedProducts = await repository.removeExhibitedProduct(
+        userId,
+        productId
+      );
+      dispatch(updateExhibitedProductAction(updatedExhibitedProducts));
+    } catch (error) {
+      throw new Error('出品商品登録解除失敗');
+    }
+  };
+}
 /**
  * お気に入り登録処理をするコールバック関数の作成
  * @param productId 登録したい商品id
