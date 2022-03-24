@@ -87,6 +87,7 @@ export function signUp(username: string, email: string, password: string) {
           updated_at: timestamp,
           username,
           favorite_products: [],
+          exhibited_products: [],
         };
         // ユーザー情報をデータベースに登録
         const userRepository = new UserFirebaseRepository();
@@ -130,6 +131,7 @@ export function signIn(email: string, password: string) {
           uid: user.uid,
           username: userData.username,
           favoriteProducts: userData.favorite_products,
+          exhibitedProducts: userData.exhibited_products,
         })
       );
       // サインインしたらトップページへ遷移
@@ -189,6 +191,7 @@ export function listenAuthState() {
           uid: user.uid,
           username: data.username,
           favoriteProducts: data.favorite_products,
+          exhibitedProducts: data.exhibited_products,
         })
       );
     });

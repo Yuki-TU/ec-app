@@ -10,6 +10,7 @@ export type User = {
   uid: string;
   username: string;
   favoriteProducts: string[];
+  exhibitedProducts: string[];
 };
 
 /** データベースで保存するユーザ情報の型 */
@@ -24,4 +25,6 @@ export type UserForDatabase = {
   username: string;
   /** お気に入り商品id一覧 */
   favorite_products: string[];
+  /** 出品商品id一覧 */
+  exhibited_products: string[];
 };
