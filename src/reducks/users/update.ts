@@ -33,12 +33,29 @@ const userSlice = createSlice({
       const updatedData = { ...state, favoriteProducts: [...action.payload] };
       return updatedData;
     },
+    /**
+     * 出品商品リストスライス
+     * @param state 現在のUserステート
+     * @param action 更新する出品商品リスト
+     * @returns 更新後のUser
+     */
+    updateExhibitedProductAction: (
+      state: User,
+      action: PayloadAction<string[]>
+    ) => {
+      const updatedData = { ...state, exhibitedProducts: [...action.payload] };
+      return updatedData;
+    },
   },
 });
 
 // action creatorをエクスポート
-export const { signInAction, signOutAction, updateFavoriteProductAction } =
-  userSlice.actions;
+export const {
+  signInAction,
+  signOutAction,
+  updateFavoriteProductAction,
+  updateExhibitedProductAction,
+} = userSlice.actions;
 
 // reducerをエクスポート
 export const user = userSlice.reducer;
