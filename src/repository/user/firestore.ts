@@ -5,8 +5,8 @@ import {
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-import type { UserForDatabase } from '../../reducks/users/types';
 import { db } from '../../firebase';
+import type { UserForDatabase } from '../../reducks/users/types';
 import { IUserRepository } from './interface';
 
 /**
@@ -17,6 +17,53 @@ class UserFirebaseRepository implements IUserRepository {
 
   constructor() {
     this.collection = 'users';
+  }
+
+  /**
+   * 指定ユーザに対して出品商品を追加
+   * @param userId ユーザ
+   * @param product 出品登録した商品id
+   * @returns 更新された出品商品リスト
+   */
+  async addExhibitedProduct(userId: string, product: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, userId),
+        { exhibited_products: arrayUnion(product) },
+        { merge: true }
+      );
+      // 更新された商品リストを取得し、返却
+      const user = await this.fetchUser(userId);
+      return user.exhibited_products;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ユーザーに対して出品商品の追加失敗');
+    }
+  }
+
+  /**
+   * 指定ユーザに対して出品商品を削除
+   * @param userId ユーザid
+   * @param product 出品削除した商品id
+   * @returns 更新された出品商品リスト
+   */
+  async removeExhibitedProduct(userId: string, product: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, userId),
+        { exhibited_products: arrayRemove(product) },
+        { merge: true }
+      );
+      const user = await this.fetchUser(userId);
+      return user.exhibited_products;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ユーザに対して出品商品登録解除失敗');
+    }
   }
 
   /**
