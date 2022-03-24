@@ -9,6 +9,7 @@ import { ProductEdit } from './components/pages/ProductEdit';
 import { AllProductList } from './components/pages/AllProductList';
 import { ProductDetail } from './components/pages/ProductDetail';
 import { FavoriteProductList } from './components/pages/FavoriteProductList';
+import { ExhibitedProductList } from './components/pages/ExhibitedProductList';
 
 /**
  * メインボディのルーティングを実施、
@@ -32,6 +33,11 @@ function Router() {
             component={FavoriteProductList}
           />
           <Route path="/edit-product(/:id)?" component={ProductEdit} />
+          <Route
+            exact
+            path="/exhibited-products"
+            component={ExhibitedProductList}
+          />
         </>
       </Auth>
     </Switch>
