@@ -32,6 +32,12 @@ function HeaderMenuAtSignIn() {
     },
     {
       onClick: () => {
+        dispatch(push('/exhibited-products'));
+      },
+      label: '出品商品一覧',
+    },
+    {
+      onClick: () => {
         dispatch(push('/favorite-products'));
       },
       label: 'お気に入り一覧',
