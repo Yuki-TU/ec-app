@@ -27,3 +27,8 @@ export const loadFavoriteProducts = createSelector(
   [userSelector],
   (state) => state.favoriteProducts
 );
+/** 出品商品リストの取得 */
+export const loadExhibitedProducts = createSelector(
+  [userSelector],
+  (state) => state.exhibitedProducts
+);
