@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     color: '#4dd0e1',
     fontSize: '1.563rem',
-    margin: '0 auto 1rem auto',
+    margin: '1rem auto',
   },
   noFavoriteText: {
     fontSize: '1.3rem',
