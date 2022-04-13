@@ -44,6 +44,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
         ],
         updated_at: mockTimestamp,
         owner: '111',
+        purchaser: '22',
       };
       render(
         <ProductCard
@@ -56,6 +57,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
           images={productMock.images}
           updated_at={productMock.updated_at}
           owner={productMock.owner}
+          purchaser={productMock.purchaser}
         />
       );
       expect(screen.getByText('¥20,000')).toBeInTheDocument();
@@ -81,6 +83,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
         ],
         updated_at: mockTimestamp,
         owner: '111',
+        purchaser: '222',
       };
       render(
         <ProductCard
@@ -93,13 +96,14 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
           images={productMock.images}
           updated_at={productMock.updated_at}
           owner={productMock.owner}
+          purchaser={productMock.purchaser}
         />
       );
       expect(screen.getByText('ラーメン')).toBeInTheDocument();
     });
   });
-  describe('商品編集者とログインユーザが同じ場合各商品カードにはメニューボタンが表示される', () => {
-    test('商品編集者とログインユーザが同じ場合は、メニューの一つである編集するボタンが表示されている', () => {
+  describe('購入者がいない、かつ、商品編集者とログインユーザが同じ場合各商品カードにはメニューボタンが表示される', () => {
+    test('purchaserが空文字、かつ、商品編集者とログインユーザが同じ場合は、メニューの一つである編集するボタンが表示されている', () => {
       // モックの帰り値を指定
       mockUseStyles.mockReturnValue({});
       mockUseDispatch.mockReturnValue({});
@@ -120,6 +124,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
         ],
         updated_at: mockTimestamp,
         owner: '1111',
+        purchaser: '',
       };
 
       render(
@@ -133,6 +138,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
           images={productMock.images}
           updated_at={productMock.updated_at}
           owner={productMock.owner}
+          purchaser={productMock.purchaser}
         />
       );
       userEvent.tab();
@@ -140,7 +146,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
 
       expect(screen.getByText('編集する')).toBeInTheDocument();
     });
-    test('商品編集者とログインユーザが同じ場合は、メニューの一つである削除するボタンが表示されている', () => {
+    test('purchaserが空文字、かつ、商品編集者とログインユーザが同じ場合は、メニューの一つである削除するボタンが表示されている', () => {
       // モックの帰り値を指定
       mockUseStyles.mockReturnValue({});
       mockUseDispatch.mockReturnValue({});
@@ -161,6 +167,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
         ],
         updated_at: mockTimestamp,
         owner: '1111',
+        purchaser: '',
       };
       render(
         <ProductCard
@@ -173,6 +180,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
           images={productMock.images}
           updated_at={productMock.updated_at}
           owner={productMock.owner}
+          purchaser={productMock.purchaser}
         />
       );
       userEvent.tab();
@@ -180,7 +188,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
 
       expect(screen.getByText('削除する')).toBeInTheDocument();
     });
-    test('商品編集者とログインユーザが異なる場合は、メニューボタンが表示されない', () => {
+    test('purchaserが空文字、かつ、商品編集者とログインユーザが異なる場合は、メニューボタンが表示されない', () => {
       // モックの帰り値を指定
       mockUseStyles.mockReturnValue({});
       mockUseDispatch.mockReturnValue({});
@@ -201,6 +209,7 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
         ],
         updated_at: mockTimestamp,
         owner: '1111',
+        purchaser: '',
       };
       render(
         <ProductCard
@@ -213,12 +222,100 @@ describe('商品情報カードコンポーネントは商品情報を表示す�
           images={productMock.images}
           updated_at={productMock.updated_at}
           owner={productMock.owner}
+          purchaser={productMock.purchaser}
         />
       );
       userEvent.tab();
       userEvent.keyboard('{Enter}');
 
       expect(screen.queryByText('削除する')).not.toBeInTheDocument();
+    });
+  });
+  describe('購入者がいる場合メニューボタンは、出品者にも表示されない', () => {
+    test('purchaserに値がある、かつ、商品編集者とログインユーザが同じ場合は、メニューの一つである編集するボタンは表示されない。', () => {
+      // モックの帰り値を指定
+      mockUseStyles.mockReturnValue({});
+      mockUseDispatch.mockReturnValue({});
+      mockLoadUserId.mockReturnValue('1111');
+
+      const productMock = {
+        name: 'ラーメン',
+        description: '',
+        category: '',
+        gender: '',
+        price: 20000,
+        id: '',
+        images: [
+          {
+            id: '',
+            path: noImage,
+          },
+        ],
+        updated_at: mockTimestamp,
+        owner: '1111',
+        purchaser: '1111', // 購入者がいる
+      };
+
+      render(
+        <ProductCard
+          name={productMock.name}
+          description={productMock.description}
+          category={productMock.category}
+          gender={productMock.gender}
+          price={productMock.price}
+          id={productMock.id}
+          images={productMock.images}
+          updated_at={productMock.updated_at}
+          owner={productMock.owner}
+          purchaser={productMock.purchaser}
+        />
+      );
+      userEvent.tab();
+      userEvent.keyboard('{Enter}');
+
+      expect(screen.queryByText('編集する')).not.toBeInTheDocument();
+    });
+    test('purchaserに値がある、かつ、商品編集者とログインユーザが異なる場合は、メニューボタンの一つである編集するボタンは表示されない', () => {
+      // モックの帰り値を指定
+      mockUseStyles.mockReturnValue({});
+      mockUseDispatch.mockReturnValue({});
+      mockLoadUserId.mockReturnValue('2222');
+
+      const productMock = {
+        name: 'ラーメン',
+        description: '',
+        category: '',
+        gender: '',
+        price: 20000,
+        id: '',
+        images: [
+          {
+            id: '',
+            path: noImage,
+          },
+        ],
+        updated_at: mockTimestamp,
+        owner: '1111',
+        purchaser: '88', // 購入者がいる
+      };
+      render(
+        <ProductCard
+          name={productMock.name}
+          description={productMock.description}
+          category={productMock.category}
+          gender={productMock.gender}
+          price={productMock.price}
+          id={productMock.id}
+          images={productMock.images}
+          updated_at={productMock.updated_at}
+          owner={productMock.owner}
+          purchaser={productMock.purchaser}
+        />
+      );
+      userEvent.tab();
+      userEvent.keyboard('{Enter}');
+
+      expect(screen.queryByText('購入する')).not.toBeInTheDocument();
     });
   });
 });

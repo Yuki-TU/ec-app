@@ -24,7 +24,7 @@ function ProductCard(props: ProductForDatabase) {
   const classes = useStyles();
   const selector = useSelector((state) => state);
   const dispatch = useDispatch();
-  const { images, name, price, id, owner } = props;
+  const { images, name, price, id, owner, purchaser } = props;
   const userId = loadUserId(selector);
 
   // メニュー表示フラグ
@@ -51,8 +51,10 @@ function ProductCard(props: ProductForDatabase) {
   const reshapePrime = price.toLocaleString();
   // 画像登録があれば、最初の画像をサムネイルにする
   const thumbnail = getThumbnail(images);
-  // 商品オーナーとログインユーザが同じなら編集ボタンを表示
-  const canEditProduct = owner === userId;
+
+  const isSold = purchaser !== '';
+  // 商品オーナーとログインユーザが同じ、かつ売り切れでないなら編集ボタンを表示
+  const canEditProduct = owner === userId && !isSold;
 
   return (
     <Card className={classes.root}>
@@ -62,11 +64,24 @@ function ProductCard(props: ProductForDatabase) {
         title="⚠エラー"
         text="情報取得に失敗しました。リロードしなおしてください。"
       />
-      <CardMedia
-        image={thumbnail}
-        className={classes.media}
-        onClick={() => dispatch(push(`/product/${id}`))}
-      />
+      {isSold ? (
+        <div className={classes.imageBox}>
+          <div className={classes.solidOut}>
+            <div className={classes.solidOutText}>sold</div>
+          </div>
+          <CardMedia
+            image={thumbnail}
+            className={classes.media}
+            onClick={() => dispatch(push(`/product/${id}`))}
+          />
+        </div>
+      ) : (
+        <CardMedia
+          image={thumbnail}
+          className={classes.media}
+          onClick={() => dispatch(push(`/product/${id}`))}
+        />
+      )}
       <CardContent className={classes.content}>
         <div>
           <Typography component="p" className={classes.productName}>
