@@ -26,6 +26,7 @@ function ProductList(props: Products) {
           images={product.images}
           updated_at={product.updated_at}
           owner={product.owner}
+          purchaser={product.purchaser}
         />
       ))}
     </div>

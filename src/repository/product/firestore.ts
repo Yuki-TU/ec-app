@@ -116,6 +116,25 @@ class ProductFirebaseRepository implements IProductRepository {
       }
     }
   }
+
+  /**
+   * 購入された商品DBに購入者IDを登録
+   * @param purchaserId 購入者ID
+   * @param purchasedProductId 購入された商品ID
+   * @returns 更新されたすべてのデータ
+   */
+  async purchasedProduct(purchaserId: string, purchasedProductId: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, purchasedProductId),
+        { purchaser: purchaserId },
+        { merge: true }
+      );
+      return await this.fetchAll();
+    } catch (error) {
+      throw new Error('商品コレクションに対する購入者登録失敗');
+    }
+  }
 }
 
 export default ProductFirebaseRepository;
