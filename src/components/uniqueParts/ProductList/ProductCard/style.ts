@@ -28,6 +28,27 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginRight: 0,
     marginLeft: 'auto',
   },
+  imageBox: {
+    position: 'relative',
+  },
+  solidOut: {
+    position: 'absolute',
+    borderTop: '40px solid #ff0000',
+    borderRight: '40px solid transparent',
+    borderBottom: '40px solid transparent',
+    borderLeft: '40px solid #ff0000',
+  },
+  solidOutText: {
+    left: '-33px',
+    top: '-25px',
+    position: 'absolute',
+    color: '#ffffffff',
+    transform: 'rotate(-45deg)',
+    WebkitTransform: 'rotate(-45deg)',
+    backgroundColor: 'transparent',
+    fontSize: '1.3rem',
+    fontWeight: 'bold',
+  },
   media: {
     cursor: 'pointer',
     height: 0,
