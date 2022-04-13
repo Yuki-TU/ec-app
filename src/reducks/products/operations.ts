@@ -10,9 +10,36 @@ import { ProductForDatabase } from './types';
 import { RootState } from '../store';
 import {
   addExhibitedProduct,
+  purchaseProduct,
   removeExhibitedProduct,
 } from '../users/operations';
 
+/**
+ * 購入された商品を登録処理するコールバック
+ * @param purchaserId 購入者ID
+ * @param purchaserdProductId 購入された商品ID
+ * @returns コールバック
+ */
+export function purchasedProduct(
+  purchaserId: string,
+  purchaserdProductId: string
+) {
+  return async (dispatch: Dispatch<unknown>) => {
+    const productRepository = new ProductFirebaseRepository();
+    try {
+      const allProducts = await productRepository.purchasedProduct(
+        purchaserId,
+        purchaserdProductId
+      );
+      // ユーザに対しても更新
+      dispatch(purchaseProduct(purchaserId, purchaserdProductId));
+      // ストアを更新
+      dispatch(fetchProductsAction(allProducts));
+    } catch (error) {
+      throw new Error('商品に対して購入された商品の登録処理失敗');
+    }
+  };
+}
 /**
  * 商品登録登録し、成功したらホームに戻るコールバックの定義
  * @param name 商品名
@@ -44,7 +71,7 @@ export function saveProduct(
       // 保存されるデータのキーであるidをデータとして保存したいため先に取得
       id = doc(firebaseCollection(db, 'products')).id;
     }
-
+    const purchaser = '';
     const savedData = {
       category,
       description,
@@ -55,6 +82,7 @@ export function saveProduct(
       price: parseInt(price, 10),
       updated_at: nowTimeStamp,
       owner,
+      purchaser,
     };
     try {
       const productRepository = new ProductFirebaseRepository();

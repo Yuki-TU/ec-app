@@ -20,6 +20,8 @@ export type ProductForDatabase = {
   updated_at: Timestamp;
   /** プロダクト出品者のユーザid */
   owner: string;
+  /** 購入者のid */
+  purchaser: string;
 };
 
 /** reduxで扱う商品情報一覧の型 */
