@@ -20,6 +20,29 @@ class UserFirebaseRepository implements IUserRepository {
   }
 
   /**
+   * 商品購入リスト更新
+   * @param userId ユーザID
+   * @param productId 商品ID
+   * @returns 更新された購入商品リスト
+   */
+  async purchaseProduct(userId: string, productId: string) {
+    try {
+      await setDoc(
+        doc(db, this.collection, userId),
+        { purchasedProducts: arrayUnion(productId) },
+        { merge: true }
+      );
+      const user = await this.fetchUser(userId);
+      return user.purchasedProducts;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error('ユーザーコレクションに対して購入商品登録失敗');
+    }
+  }
+
+  /**
    * 指定ユーザに対して出品商品を追加
    * @param userId ユーザ
    * @param product 出品登録した商品id

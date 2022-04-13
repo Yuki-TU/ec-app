@@ -46,6 +46,19 @@ const userSlice = createSlice({
       const updatedData = { ...state, exhibitedProducts: [...action.payload] };
       return updatedData;
     },
+    /**
+     * 購入商品更新スライス
+     * @param state 現在のUser
+     * @param action 購入商品リスト
+     * @returns 更新後のUser
+     */
+    updatePurchasedProductAction: (
+      state: User,
+      action: PayloadAction<string[]>
+    ) => {
+      const updatedData = { ...state, purchasedProducts: [...action.payload] };
+      return updatedData;
+    },
   },
 });
 
@@ -55,6 +68,7 @@ export const {
   signOutAction,
   updateFavoriteProductAction,
   updateExhibitedProductAction,
+  updatePurchasedProductAction,
 } = userSlice.actions;
 
 // reducerをエクスポート
