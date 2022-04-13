@@ -4,6 +4,8 @@ import { useStyles } from './style';
 
 /** ボタンコンポーネントの型定義 */
 type PrimaryButtonProps = {
+  /** 有効フラグ */
+  disabled?: boolean;
   /** ボタンに表記するラベル */
   label: string;
   /** ボタンタイプ(buttn | submit | reset) */
@@ -18,7 +20,7 @@ type PrimaryButtonProps = {
  * @return コンポーネント
  */
 function PrimaryButton(props: PrimaryButtonProps) {
-  const { label, onClick, type } = props;
+  const { label, onClick, type, disabled } = props;
   const classes = useStyles();
 
   return (
@@ -27,6 +29,7 @@ function PrimaryButton(props: PrimaryButtonProps) {
       variant="contained"
       onClick={onClick}
       type={type}
+      disabled={disabled}
     >
       {label}
     </Button>
@@ -36,6 +39,7 @@ function PrimaryButton(props: PrimaryButtonProps) {
 /** 引数のデフォルト値の設定 */
 PrimaryButton.defaultProps = {
   onClick: () => {},
+  disabled: false,
 };
 
 export default PrimaryButton;
