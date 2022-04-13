@@ -3,6 +3,8 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { push } from 'connected-react-router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { purchasedProduct } from '../../../reducks/products/operations';
+import { loadProducts } from '../../../reducks/products/selectors';
 import { ProductForDatabase } from '../../../reducks/products/types';
 import { useSelector } from '../../../reducks/store';
 import {
@@ -34,12 +36,13 @@ function ProductDetail() {
   const path = selector.router.location.pathname;
   const productId = path.split('/product/')[1];
 
-  const userId = loadUserId(selector);
   const [product, setProduct] = useState<ProductForDatabase>();
   // ダイアログを管理するステート
   const [FailureDialog, setOpenFailureDialog] = useState(false);
   // お気に商品かどうかを保持するステート
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const [isOpenPuchaseDialog, setIsOpenPurchaseDialog] = useState(false);
 
   // HACK: stateを利用しているためuseCallbackは使えない
   // お気に入り処理
@@ -56,10 +59,19 @@ function ProductDetail() {
   };
   // お気に入りの場合は、無理潰されたハード、お気に入りではない場合枠組みのハード
   const favoriteIcon = isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />;
-  // 商品オーナーとログインユーザが同じ場合、編集ボタン表示
-  const canEditProduct = userId === product?.owner;
 
-  // 商品詳細ページ訪問時に一度だけ実行
+  const isSold = product?.purchaser !== '';
+
+  // 売り切れていない、かつ、商品オーナーとログインユーザが同じなら編集可能
+  const userId = loadUserId(selector);
+  const canEditProduct = userId === product?.owner && !isSold;
+
+  // 編集できない、売り切れちないければ購入可能
+  const canPurchaseProduct = !canEditProduct && !isSold;
+
+  // 商品ストアが変更されるたびに商品情報取得
+  // 購入されたらすぐに、売り切れ表示をレンダリングするため
+  const products = loadProducts(selector);
   useEffect(() => {
     // 即時実行
     (async () => {
@@ -76,7 +88,7 @@ function ProductDetail() {
     const favoriteProductIds = loadFavoriteProducts(selector);
     const existFavorite = favoriteProductIds.includes(productId);
     setIsFavorite(existFavorite);
-  }, []);
+  }, [products]);
 
   return (
     <section className={classes.root}>
@@ -85,6 +97,15 @@ function ProductDetail() {
         setIsOpen={setOpenFailureDialog}
         title="⚠エラー"
         text="情報取得に失敗しました。リロードしなおしてください。"
+      />
+      <Dialog
+        isOpen={isOpenPuchaseDialog}
+        setIsOpen={setIsOpenPurchaseDialog}
+        title="購入確認"
+        text={`${product?.name}を本当に購入しますか？`}
+        onClick={() => {
+          if (product) dispatch(purchasedProduct(userId, product.id));
+        }}
       />
       {product && (
         <div className={classes.imageAndDetailGrid}>
@@ -109,11 +130,23 @@ function ProductDetail() {
               <div className={classes.editButton}>
                 <PrimaryButton
                   label="商品の編集"
-                  onClick={() => {
-                    dispatch(push(`/edit-product/${product.id}`));
-                  }}
+                  onClick={() => dispatch(push(`/edit-product/${product.id}`))}
                   type="button"
                 />
+              </div>
+            )}
+            {canPurchaseProduct && (
+              <div className={classes.editButton}>
+                <PrimaryButton
+                  label="購入する"
+                  onClick={() => setIsOpenPurchaseDialog(true)}
+                  type="button"
+                />
+              </div>
+            )}
+            {isSold && (
+              <div className={classes.editButton}>
+                <PrimaryButton label="売り切れました" type="button" disabled />
               </div>
             )}
             <h1>商品説明</h1>
