@@ -16,7 +16,34 @@ import {
   signOutAction,
   updateExhibitedProductAction,
   updateFavoriteProductAction,
+  updatePurchasedProductAction,
 } from './update';
+
+/**
+ * 商品購入登録処理をするコールバック
+ * @param purchaser 購入者ID
+ * @param productId 購入した商品ID
+ * @returns コールバック
+ */
+export function purchaseProduct(
+  purchaser: string,
+  productId: string // sProductForDatabase
+) {
+  return async (dispatch: Dispatch<Action>) => {
+    const repository = new UserFirebaseRepository();
+
+    try {
+      const purchasedProducts = await repository.purchaseProduct(
+        purchaser,
+        productId
+      );
+
+      dispatch(updatePurchasedProductAction(purchasedProducts));
+    } catch (error) {
+      throw new Error('商品購入失敗');
+    }
+  };
+}
 
 /**
  * 自身で出品商品を管理処理をするコールバック関数の作成
@@ -132,6 +159,7 @@ export function signUp(username: string, email: string, password: string) {
           username,
           favorite_products: [],
           exhibited_products: [],
+          purchasedProducts: [],
         };
         // ユーザー情報をデータベースに登録
         const userRepository = new UserFirebaseRepository();
@@ -176,6 +204,7 @@ export function signIn(email: string, password: string) {
           username: userData.username,
           favoriteProducts: userData.favorite_products,
           exhibitedProducts: userData.exhibited_products,
+          purchasedProducts: userData.purchasedProducts,
         })
       );
       // サインインしたらトップページへ遷移
@@ -236,6 +265,7 @@ export function listenAuthState() {
           username: data.username,
           favoriteProducts: data.favorite_products,
           exhibitedProducts: data.exhibited_products,
+          purchasedProducts: data.purchasedProducts,
         })
       );
     });

@@ -14,6 +14,7 @@ export const initialUserState: User = {
   username: '',
   favoriteProducts: [],
   exhibitedProducts: [],
+  purchasedProducts: [],
 };
 
 /** 商品情報の初期化 */
