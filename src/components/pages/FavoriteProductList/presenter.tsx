@@ -1,61 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from 'react-query';
 import { ProductForDatabase } from '../../../reducks/products/types';
 import { useSelector } from '../../../reducks/store';
 import { loadFavoriteProducts } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
-import { Dialog } from '../../uniqueParts/Dialog';
+import { LoadingIcon } from '../../uiParts/LoadingIcon';
+import { ErrorMessage } from '../../uiParts/ErrorMessage';
 import { ProductList } from '../../uniqueParts/ProductList';
-import { useStyles } from './style';
 
 /**
  * 商品リストを表示するコンポーネント
  * @returns コンポーネント
  */
 function FavoriteProductList() {
-  const classes = useStyles();
-
   // お気に入り商品idリストを情報取得
   const selector = useSelector((state) => state);
   const favoriteProductIds = loadFavoriteProducts(selector);
 
-  const [openFailureDialog, setOpenFailureDialog] = useState(false);
   const [favoriteProducts, setFavoriteProducts] = useState<
     ProductForDatabase[]
   >([]);
 
-  // コンポーネントを表示したら、商品データを取得する
-  useEffect(() => {
-    // 非同期処理を中断するためのクラス
-    const abortCtrl = new AbortController();
+  const { error, isFetching } = useQuery('favoriteProducts', async () => {
+    const repository = new ProductFirebaseRepository();
+    const products = await repository.findByIds(favoriteProductIds);
+    setFavoriteProducts(products);
+  });
 
-    try {
-      (async () => {
-        const repository = new ProductFirebaseRepository();
-        const products = await repository.findByIds(favoriteProductIds);
-        setFavoriteProducts(products);
-      })();
-    } catch (error) {
-      setOpenFailureDialog(true);
-    }
-    return () => {
-      // 非同期処理を完了する前に、コンポーネントがアンマウントされたら非同期処理を中断する
-      abortCtrl.abort();
-    };
-  }, []);
+  if (error) {
+    return (
+      <ErrorMessage
+        title="エラー"
+        text="情報取得に失敗しました。リロードしなおしてください。"
+      />
+    );
+  }
+
+  if (isFetching) {
+    return <LoadingIcon />;
+  }
 
   return (
-    <section className={classes.root}>
-      <Dialog
-        isOpen={openFailureDialog}
-        setIsOpen={setOpenFailureDialog}
-        title="⚠エラー"
-        text="不具合が発生しました。通信状況を確認しリロードし直してください。"
-      />
-      <h1 className={classes.headerTitle}>お気に入り商品</h1>
+    <section className="relative my-0 mx-auto w-full max-w-[575px] text-center sm:max-w-5xl ">
+      <h1 className="my-4 mx-auto text-[1.563rem] text-center text-[#4dd0e1]">
+        お気に入り商品
+      </h1>
       {favoriteProducts.length ? (
         <ProductList list={favoriteProducts} />
       ) : (
-        <p className={classes.noFavoriteText}>お気に入りした商品がありません</p>
+        <p className="mx-auto mt-20 mb-4 text-[1.3rem]">
+          お気に入りした商品がありません
+        </p>
       )}
     </section>
   );
