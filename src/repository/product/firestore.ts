@@ -61,6 +61,8 @@ class ProductFirebaseRepository implements IProductRepository {
    * @returns 検索結果の商品情報リスト
    */
   async findByIds(ids: string[]) {
+    if (!ids.length) return [];
+
     const productsRef = collection(db, this.collection);
     const queryKey = query(productsRef, where('id', 'in', ids));
     const products: ProductForDatabase[] = [];
