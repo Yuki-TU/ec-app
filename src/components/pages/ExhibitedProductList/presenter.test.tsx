@@ -1,24 +1,24 @@
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+import { useQuery } from 'react-query';
 import { ExhibitedProductList } from '.';
 import { useSelector } from '../../../reducks/store';
 import { loadFavoriteProducts } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
-import { useStyles } from './style';
 
 // モジュールのモック化
 jest.mock('connected-react-router', () => jest.fn());
 jest.mock('react-redux');
-jest.mock('./style');
+jest.mock('react-query');
 jest.mock('../../../reducks/users/selectors');
 jest.mock('../../../reducks/store');
 jest.mock('../../../repository/product');
 jest.mock('../../../firebase', () => {});
 
 // const mockUseDispatch = useDispatch as jest.Mock;
-const mockUseStyles = useStyles as jest.Mock;
 const mockUseSelector = useSelector as jest.Mock;
+const mockUseQuery = useQuery as jest.Mock;
 const mockLoadFavoriteProducts = loadFavoriteProducts as unknown as jest.Mock;
 const mockProductFirebaseRepository = ProductFirebaseRepository as jest.Mock;
 
@@ -29,7 +29,7 @@ beforeEach(() => {
 describe('ExhibitedProductListコンポーネントは出品商品一覧を表示する', () => {
   test('出品商品がない場合は「出品した商品がありません」と表示する', async () => {
     // モックの帰り値を指定
-    mockUseStyles.mockReturnValue({});
+    mockUseQuery.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
     mockLoadFavoriteProducts.mockReturnValue([]);
     mockProductFirebaseRepository.mockImplementationOnce(() => ({
@@ -60,8 +60,8 @@ describe('ExhibitedProductListコンポーネントは出品商品一覧を表�
 
   test('ヘッダーテキストに「出品商品」と表示する', async () => {
     // モックの帰り値を指定
-    mockUseStyles.mockReturnValue({});
     mockUseSelector.mockReturnValue({});
+    mockUseQuery.mockReturnValue({});
     mockLoadFavoriteProducts.mockReturnValue([]);
     mockProductFirebaseRepository.mockImplementationOnce(() => ({
       findByIds: () => ({
