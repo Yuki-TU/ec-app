@@ -2,6 +2,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { push } from 'connected-react-router';
 import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { purchasedProduct } from '../../../reducks/products/operations';
 import { loadProducts } from '../../../reducks/products/selectors';
@@ -16,19 +17,19 @@ import {
   loadUserId,
 } from '../../../reducks/users/selectors';
 import { ProductFirebaseRepository } from '../../../repository/product';
+import { LoadingIcon } from '../../uiParts/LoadingIcon';
 import { IconButton } from '../../uiParts/IconButton';
 import { PrimaryButton } from '../../uiParts/PrimaryButton';
+import { ErrorMessage } from '../../uiParts/ErrorMessage';
 import { Dialog } from '../../uniqueParts/Dialog';
 import { addBrTagToLineBreaks, recreateImages } from './hook';
 import { ImageSwiper } from './ImageSwiper';
-import { useStyles } from './style';
 
 /**
  * 商品詳細ページのコンポーネント
  * @returns 商品詳細ページのコンポーネント
  */
 function ProductDetail() {
-  const classes = useStyles();
   const selector = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -37,8 +38,13 @@ function ProductDetail() {
   const productId = path.split('/product/')[1];
 
   const [product, setProduct] = useState<ProductForDatabase>();
-  // ダイアログを管理するステート
-  const [FailureDialog, setOpenFailureDialog] = useState(false);
+
+  const { error, isLoading } = useQuery('fetchProducts', async () => {
+    const productRepository = new ProductFirebaseRepository();
+    const productData = await productRepository.fetch(productId);
+    setProduct(productData);
+  });
+
   // お気に商品かどうかを保持するステート
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -73,31 +79,27 @@ function ProductDetail() {
   // 購入されたらすぐに、売り切れ表示をレンダリングするため
   const products = loadProducts(selector);
   useEffect(() => {
-    // 即時実行
-    (async () => {
-      try {
-        // 商品の情報を取得
-        const productRepository = new ProductFirebaseRepository();
-        const productData = await productRepository.fetch(productId);
-        setProduct(productData);
-      } catch (error) {
-        setOpenFailureDialog(true);
-      }
-    })();
     // お気に入り商品なのかを判定している
     const favoriteProductIds = loadFavoriteProducts(selector);
     const existFavorite = favoriteProductIds.includes(productId);
     setIsFavorite(existFavorite);
   }, [products]);
 
-  return (
-    <section className={classes.root}>
-      <Dialog
-        isOpen={FailureDialog}
-        setIsOpen={setOpenFailureDialog}
-        title="⚠エラー"
+  if (error) {
+    return (
+      <ErrorMessage
+        title="エラー"
         text="情報取得に失敗しました。リロードしなおしてください。"
       />
+    );
+  }
+
+  if (isLoading) {
+    return <LoadingIcon />;
+  }
+
+  return (
+    <section className="relative my-0 mx-auto w-full max-w-[575px] text-center sm:max-w-[1024px]">
       <Dialog
         isOpen={isOpenPuchaseDialog}
         setIsOpen={setIsOpenPurchaseDialog}
@@ -108,18 +110,20 @@ function ProductDetail() {
         }}
       />
       {product && (
-        <div className={classes.imageAndDetailGrid}>
-          <div className={classes.imageSliderBox}>
+        <div className="flex flex-row flex-wrap gap-x-10">
+          <div className="flex-[6] mx-auto mb-[2rem] w-full h-auto sm:my-0 sm:w-[400px] ">
             <ImageSwiper
               images={recreateImages(product.images)}
               alt="商品画像"
             />
           </div>
-          <div className={classes.productDetailDescription}>
-            <h1 className={classes.productName}>{product.name}</h1>
-            <p className={classes.productPrice}>
+          <div className="flex-[4] px-[1rem] mx-auto mb-[16px] w-full h-auto text-left sm:my-0 sm:w-[400px]">
+            <h1 className="mx-0 mt-[1rem] mb-[0.6rem] text-[1.4rem]">
+              {product.name}
+            </h1>
+            <p className="m-0 text-[1.4rem] text-[#42993A]">
               ¥{product.price.toLocaleString()}
-              <span className={classes.tax}>(税込)</span>
+              <span className="inline-block m-0 text-[0.8rem]">(税込)</span>
             </p>
             <IconButton
               label="お気に入り"
@@ -127,7 +131,7 @@ function ProductDetail() {
               icon={favoriteIcon}
             />
             {canEditProduct && (
-              <div className={classes.editButton}>
+              <div className="my-0 mx-auto">
                 <PrimaryButton
                   label="商品の編集"
                   onClick={() => dispatch(push(`/edit-product/${product.id}`))}
@@ -136,7 +140,7 @@ function ProductDetail() {
               </div>
             )}
             {canPurchaseProduct && (
-              <div className={classes.editButton}>
+              <div className="my-0 mx-auto">
                 <PrimaryButton
                   label="購入する"
                   onClick={() => setIsOpenPurchaseDialog(true)}
@@ -145,17 +149,17 @@ function ProductDetail() {
               </div>
             )}
             {isSold && (
-              <div className={classes.editButton}>
+              <div className="my-0 mx-auto">
                 <PrimaryButton label="売り切れました" type="button" disabled />
               </div>
             )}
-            <h1>商品説明</h1>
-            <p className={classes.productDescription}>
+            <h1 className="text-[1rem]">商品説明</h1>
+            <p className="m-0 text-sm">
               {addBrTagToLineBreaks(product.description)}
             </p>
-            <h1>商品情報</h1>
-            <h2 className={classes.productInformationHeader}>カテゴリ</h2>
-            <p className={classes.productInformation}>
+            <h1 className="text-base">商品情報</h1>
+            <h2 className="inline-block mr-4 text-sm">カテゴリ</h2>
+            <p className="inline-block text-sm">
               {product.gender}/{product.category}
             </p>
           </div>
