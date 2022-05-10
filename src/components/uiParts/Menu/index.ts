@@ -1,1 +1,1 @@
-export { default as Menu } from './presenter';
+export { default as Menu } from './container';

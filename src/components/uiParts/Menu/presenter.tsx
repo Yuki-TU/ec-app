@@ -6,9 +6,9 @@ import {
   Paper,
   Popper,
 } from '@material-ui/core';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-type MenuProps = {
+export type MenuProps = {
   /** 各メニューの設定 */
   menuItems: { onClick: () => void; label: string }[];
   /** 表示する位置 */
@@ -18,41 +18,22 @@ type MenuProps = {
   /** メニューの開閉を管理するステートメソッド */
   setOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+type Props = {
+  /** メニュー閉じる */
+  closeMenu: (event: React.MouseEvent<EventTarget>) => void;
+  /** どれかキーダウンした時に走る関数 */
+  handleListKeyDown: (event: React.KeyboardEvent) => void;
+} & MenuProps;
+
 /**
  * メニューコンポーネント
  * @param props menuItems: メニューせ亭, reference: 参照場所, openMenu: メニュー開閉フラグ, setOpenMenu: メニュー開閉フラグ制御
  * @returns コンポーネント
  */
-function Menu(props: MenuProps) {
-  const { menuItems, reference, openMenu, setOpenMenu } = props;
-
-  const closeMenu = (event: React.MouseEvent<EventTarget>) => {
-    if (
-      reference?.current &&
-      reference?.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenMenu(false);
-  };
-
-  // タブを押したらメニューを閉じる
-  const handleListKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpenMenu(false);
-    }
-  };
-
-  const prevOpenAccountMenu = useRef(openMenu);
-  useEffect(() => {
-    // メニュー開いて、閉じてからのフォーカスをメニューボタンに戻す
-    if (prevOpenAccountMenu.current && !openMenu) {
-      reference?.current?.focus();
-    }
-    // メニュー開閉フラグ更新
-    prevOpenAccountMenu.current = openMenu;
-  }, [openMenu]);
+function MenuPresenter(props: Props) {
+  const { menuItems, reference, openMenu, closeMenu, handleListKeyDown } =
+    props;
 
   return (
     <Popper
@@ -91,4 +72,4 @@ function Menu(props: MenuProps) {
   );
 }
 
-export default Menu;
+export default React.memo(MenuPresenter);
