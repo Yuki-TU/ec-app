@@ -32,22 +32,28 @@ function ProductEdit() {
   const productId = window.location.pathname.split('/edit-product/')[1];
 
   // プルダウン選択に必要なデータ定義
-  const categories = [
-    { id: 'game', name: 'ゲーム' },
-    { id: 'shoes', name: 'シューズ' },
-    { id: 'clothes', name: '洋服' },
-    { id: 'pc', name: 'パソコン' },
-    { id: 'book', name: '書籍' },
-    { id: 'interior', name: 'インテリア' },
-    { id: 'cosme', name: 'コスメ' },
-    { id: 'vehicle', name: '乗り物' },
-    { id: 'hobby', name: 'ホビー' },
-  ];
-  const genders = [
-    { id: 'male', name: 'メンズ' },
-    { id: 'female', name: 'レディース' },
-    { id: 'unisex', name: 'ユニセックス' },
-  ];
+  const categories = React.useMemo(
+    () => [
+      { id: 'game', name: 'ゲーム' },
+      { id: 'shoes', name: 'シューズ' },
+      { id: 'clothes', name: '洋服' },
+      { id: 'pc', name: 'パソコン' },
+      { id: 'book', name: '書籍' },
+      { id: 'interior', name: 'インテリア' },
+      { id: 'cosme', name: 'コスメ' },
+      { id: 'vehicle', name: '乗り物' },
+      { id: 'hobby', name: 'ホビー' },
+    ],
+    []
+  );
+  const genders = React.useMemo(
+    () => [
+      { id: 'male', name: 'メンズ' },
+      { id: 'female', name: 'レディース' },
+      { id: 'unisex', name: 'ユニセックス' },
+    ],
+    []
+  );
 
   const inputProductName = useCallback(
     (e) => {
