@@ -92,14 +92,17 @@ function SignUp() {
       />
       <h2 className={classes.title}>アカウント登録</h2>
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (validatePassword(password, confirmPassword)) {
-            handleSignUp();
-          } else {
-            setOpenFailureDialog(true);
-          }
-        }}
+        onSubmit={React.useCallback(
+          (event) => {
+            event.preventDefault();
+            if (validatePassword(password, confirmPassword)) {
+              handleSignUp();
+            } else {
+              setOpenFailureDialog(true);
+            }
+          },
+          [handleSignUp, setOpenFailureDialog, validatePassword]
+        )}
       >
         <Dialog
           isOpen={openFailureDialog}
@@ -153,12 +156,13 @@ function SignUp() {
       </form>
       <TextLink
         label="アカウントをお持ちの方はこちら"
-        onClick={() => {
-          dispatch(push('./signin'));
-        }}
+        onClick={React.useCallback(
+          () => dispatch(push('./signin')),
+          [dispatch, push]
+        )}
       />
     </div>
   );
 }
 
-export default SignUp;
+export default React.memo(SignUp);
