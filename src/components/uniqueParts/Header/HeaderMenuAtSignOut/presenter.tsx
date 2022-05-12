@@ -31,4 +31,4 @@ function HeaderMenuAtSignOut() {
     </>
   );
 }
-export default HeaderMenuAtSignOut;
+export default React.memo(HeaderMenuAtSignOut);

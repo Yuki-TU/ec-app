@@ -32,4 +32,4 @@ function TextLink(props: TextLinkProps) {
   );
 }
 
-export default TextLink;
+export default React.memo(TextLink);

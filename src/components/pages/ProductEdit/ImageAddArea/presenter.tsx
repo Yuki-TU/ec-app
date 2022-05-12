@@ -104,4 +104,4 @@ function ImageAddArea(props: ImageAddAreaProps) {
   );
 }
 
-export default ImageAddArea;
+export default React.memo(ImageAddArea);

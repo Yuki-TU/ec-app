@@ -133,4 +133,4 @@ function ProductCard(props: ProductForDatabase) {
     </Card>
   );
 }
-export default ProductCard;
+export default React.memo(ProductCard);

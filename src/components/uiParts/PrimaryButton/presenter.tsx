@@ -42,4 +42,4 @@ PrimaryButton.defaultProps = {
   disabled: false,
 };
 
-export default PrimaryButton;
+export default React.memo(PrimaryButton);

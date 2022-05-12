@@ -73,4 +73,4 @@ function ImageSwiper(props: ImageSwiperProps) {
   );
 }
 
-export default ImageSwiper;
+export default React.memo(ImageSwiper);
