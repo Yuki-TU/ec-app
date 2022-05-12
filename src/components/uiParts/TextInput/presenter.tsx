@@ -66,4 +66,4 @@ TextInput.defaultProps = {
   minLength: 0,
 };
 
-export default TextInput;
+export default React.memo(TextInput);

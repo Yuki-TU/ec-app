@@ -47,4 +47,4 @@ function SelectBox(props: SelectBoxProps) {
   );
 }
 
-export default SelectBox;
+export default React.memo(SelectBox);

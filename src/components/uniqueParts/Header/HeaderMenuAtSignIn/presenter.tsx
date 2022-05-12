@@ -71,4 +71,4 @@ function HeaderMenuAtSignIn() {
     </>
   );
 }
-export default HeaderMenuAtSignIn;
+export default React.memo(HeaderMenuAtSignIn);

@@ -33,4 +33,4 @@ function ProductList(props: Products) {
   );
 }
 
-export default ProductList;
+export default React.memo(ProductList);
