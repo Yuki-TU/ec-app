@@ -12,7 +12,7 @@ import { Dialog } from '../../uniqueParts/Dialog';
  * サインイン画面のコンポーネント
  * @return サインアップコンポーネント
  */
-function SignUp() {
+function SignIn() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -70,11 +70,14 @@ function SignUp() {
       />
       <h2 className={classes.title}>サインイン</h2>
       <form
-        onSubmit={(event) => {
-          // 実際にフォーム送信しないため、以下を追加
-          event.preventDefault();
-          handleSignIn();
-        }}
+        onSubmit={React.useCallback(
+          (event) => {
+            // 実際にフォーム送信しないため、以下を追加
+            event.preventDefault();
+            handleSignIn();
+          },
+          [handleSignIn]
+        )}
       >
         <TextInput
           fullWidth
@@ -103,18 +106,17 @@ function SignUp() {
       </form>
       <TextLink
         label="アカウントをお持ちでない方はこちら"
-        onClick={() => {
-          dispatch(push('./signup'));
-        }}
+        onClick={React.useCallback(() => dispatch(push('./signup')), [])}
       />
       <TextLink
         label="パスワードを忘れた方はこちら"
-        onClick={() => {
-          dispatch(push('./signin/reset'));
-        }}
+        onClick={React.useCallback(
+          () => dispatch(push('./signin/reset')),
+          [dispatch, push]
+        )}
       />
     </div>
   );
 }
 
-export default SignUp;
+export default SignIn;
