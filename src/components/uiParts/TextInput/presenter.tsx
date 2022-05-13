@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { useStyles } from './style';
 
 /** TextInputの引数の型定義 */
-type TextInputProps = {
+export type TextInputProps = {
   /** フルサイズ指定(true: フルサイズ, false: フルサイズではない) */
   fullWidth: boolean;
   /** テキスト入力欄のラベル */
@@ -29,41 +29,37 @@ type TextInputProps = {
  * @param props - 各種設定値
  * @return コンポーネント
  */
-function TextInput(props: TextInputProps) {
-  const classes = useStyles();
-  const {
+const TextInput = React.memo(
+  ({
     fullWidth,
     label,
-    minLength,
+    minLength = 0,
     multiline,
     required,
     rows,
     value,
     type,
     onChange,
-  } = props;
-  const textStyle = fullWidth ? classes.full : classes.half;
+  }: TextInputProps) => {
+    const classes = useStyles();
+    const textStyle = fullWidth ? classes.full : classes.half;
 
-  return (
-    <TextField
-      className={textStyle}
-      fullWidth={fullWidth}
-      label={label}
-      margin="dense"
-      multiline={multiline}
-      required={required}
-      rows={rows}
-      value={value}
-      type={type}
-      onChange={onChange}
-      inputProps={{ minLength }}
-    />
-  );
-}
+    return (
+      <TextField
+        className={textStyle}
+        fullWidth={fullWidth}
+        label={label}
+        margin="dense"
+        multiline={multiline}
+        required={required}
+        rows={rows}
+        value={value}
+        type={type}
+        onChange={onChange}
+        inputProps={{ minLength }}
+      />
+    );
+  }
+);
 
-/** 引数のデフォルト値の設定 */
-TextInput.defaultProps = {
-  minLength: 0,
-};
-
-export default React.memo(TextInput);
+export default TextInput;
