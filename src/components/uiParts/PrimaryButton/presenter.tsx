@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import { useStyles } from './style';
 
 /** ボタンコンポーネントの型定義 */
-type PrimaryButtonProps = {
+export type PrimaryButtonProps = {
   /** 有効フラグ */
   disabled?: boolean;
   /** ボタンに表記するラベル */
@@ -19,27 +19,27 @@ type PrimaryButtonProps = {
  * @param props 各種設定
  * @return コンポーネント
  */
-function PrimaryButton(props: PrimaryButtonProps) {
-  const { label, onClick, type, disabled } = props;
-  const classes = useStyles();
+const PrimaryButton = React.memo(
+  ({
+    label,
+    onClick = () => {},
+    type,
+    disabled = false,
+  }: PrimaryButtonProps) => {
+    const classes = useStyles();
 
-  return (
-    <Button
-      className={classes.button}
-      variant="contained"
-      onClick={onClick}
-      type={type}
-      disabled={disabled}
-    >
-      {label}
-    </Button>
-  );
-}
+    return (
+      <Button
+        className={classes.button}
+        variant="contained"
+        onClick={onClick}
+        type={type}
+        disabled={disabled}
+      >
+        {label}
+      </Button>
+    );
+  }
+);
 
-/** 引数のデフォルト値の設定 */
-PrimaryButton.defaultProps = {
-  onClick: () => {},
-  disabled: false,
-};
-
-export default React.memo(PrimaryButton);
+export default PrimaryButton;
