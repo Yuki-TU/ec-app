@@ -30,5 +30,7 @@ module.exports = {
   rules: {
     'import/prefer-default-export': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/display-name': 'off',
+    'react/function-component-definition': 'off',
   },
 };
