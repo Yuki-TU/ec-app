@@ -8,7 +8,7 @@ import { Products } from '../../../reducks/products/types';
  * @param props list: 表示したい商品リスト
  * @returns コンポーネント
  */
-function ProductList(props: Products) {
+const ProductList = React.memo((props: Products) => {
   const { list } = props;
   const classes = useStyles();
 
@@ -31,6 +31,6 @@ function ProductList(props: Products) {
       ))}
     </div>
   );
-}
+});
 
-export default React.memo(ProductList);
+export default ProductList;

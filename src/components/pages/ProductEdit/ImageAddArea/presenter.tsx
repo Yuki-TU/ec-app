@@ -19,7 +19,7 @@ type ImageAddAreaProps = {
  * @param props images: 画像ステート, setImages: 画像セットステート
  * @returns コンポーネント
  */
-function ImageAddArea(props: ImageAddAreaProps) {
+const ImageAddArea = React.memo((props: ImageAddAreaProps) => {
   const classes = useStyles();
   const { setImages, images } = props;
   const [openUploadFailureDialog, setOpenUploadFailureDialog] = useState(false);
@@ -102,6 +102,6 @@ function ImageAddArea(props: ImageAddAreaProps) {
       </IconButton>
     </div>
   );
-}
+});
 
-export default React.memo(ImageAddArea);
+export default ImageAddArea;

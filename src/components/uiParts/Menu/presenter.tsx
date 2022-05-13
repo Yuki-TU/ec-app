@@ -31,7 +31,7 @@ type Props = {
  * @param props menuItems: メニューせ亭, reference: 参照場所, openMenu: メニュー開閉フラグ, setOpenMenu: メニュー開閉フラグ制御
  * @returns コンポーネント
  */
-function MenuPresenter(props: Props) {
+const MenuPresenter = React.memo((props: Props) => {
   const { menuItems, reference, openMenu, closeMenu, handleListKeyDown } =
     props;
 
@@ -70,6 +70,6 @@ function MenuPresenter(props: Props) {
       )}
     </Popper>
   );
-}
+});
 
-export default React.memo(MenuPresenter);
+export default MenuPresenter;

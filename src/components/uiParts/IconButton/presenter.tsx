@@ -19,25 +19,27 @@ export type IconProps = {
  * @param param label: テキストラベル, icon: materialuiアイコン, onClick: callback, badgeContent: バッジ数, ref?: 表示位置のための参照
  * @returns
  */
-function IconButton({
-  label = '',
-  icon,
-  onClick,
-  badgeContent = 0,
-  reference = undefined,
-}: IconProps) {
-  const classes = useStyles();
+const IconButton = React.memo(
+  ({
+    label = '',
+    icon,
+    onClick,
+    badgeContent = 0,
+    reference = undefined,
+  }: IconProps) => {
+    const classes = useStyles();
 
-  return (
-    <MuiIconButton onClick={onClick} ref={reference}>
-      <div className={classes.icon}>
-        <Badge badgeContent={badgeContent} color="secondary">
-          {icon}
-        </Badge>
-        <span className={classes.label}>{label}</span>
-      </div>
-    </MuiIconButton>
-  );
-}
+    return (
+      <MuiIconButton onClick={onClick} ref={reference}>
+        <div className={classes.icon}>
+          <Badge badgeContent={badgeContent} color="secondary">
+            {icon}
+          </Badge>
+          <span className={classes.label}>{label}</span>
+        </div>
+      </MuiIconButton>
+    );
+  }
+);
 
-export default React.memo(IconButton);
+export default IconButton;

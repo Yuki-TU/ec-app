@@ -9,7 +9,7 @@ import { IconButton } from '../../../uiParts/IconButton';
  * アカウントログアウト時のヘッダーメニュー
  * @returns コンポーネント
  */
-function HeaderMenuAtSignOut() {
+const HeaderMenuAtSignOut = React.memo(() => {
   const dispatch = useDispatch();
 
   return (
@@ -30,5 +30,5 @@ function HeaderMenuAtSignOut() {
       />
     </>
   );
-}
-export default React.memo(HeaderMenuAtSignOut);
+});
+export default HeaderMenuAtSignOut;

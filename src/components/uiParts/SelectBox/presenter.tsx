@@ -29,7 +29,7 @@ type SelectBoxProps = {
  * @param props - {label: 表示ラベル, selectedItem: 選択のアイテム, reqired: 必須か, onChange: コールバック, items: アイテム}
  * @returns コンポーネント
  */
-function SelectBox(props: SelectBoxProps) {
+const SelectBox = React.memo((props: SelectBoxProps) => {
   const classes = useStyles();
   const { label, selectedItem, required, onChange, items } = props;
 
@@ -45,6 +45,6 @@ function SelectBox(props: SelectBoxProps) {
       </Select>
     </FormControl>
   );
-}
+});
 
-export default React.memo(SelectBox);
+export default SelectBox;

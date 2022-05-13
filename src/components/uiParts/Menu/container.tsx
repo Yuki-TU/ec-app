@@ -6,7 +6,7 @@ import MenuPresenter, { MenuProps } from './presenter';
  * @param props パラメータ
  * @returns コンテナコンポーネント
  */
-function MenuContainer(props: MenuProps) {
+const MenuContainer = React.memo((props: MenuProps) => {
   const { reference, openMenu, setOpenMenu } = props;
   const closeMenu = (event: React.MouseEvent<EventTarget>) => {
     if (
@@ -43,6 +43,6 @@ function MenuContainer(props: MenuProps) {
       closeMenu={React.useCallback(closeMenu, [setOpenMenu])}
     />
   );
-}
+});
 
-export default React.memo(MenuContainer);
+export default MenuContainer;
