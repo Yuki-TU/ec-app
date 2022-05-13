@@ -20,7 +20,7 @@ import { useStyles } from './style';
  * @param props DB保存の商品情報
  * @returns コンポーネント
  */
-function ProductCard(props: ProductForDatabase) {
+const ProductCard = React.memo((props: ProductForDatabase) => {
   const classes = useStyles();
   const selector = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -132,5 +132,5 @@ function ProductCard(props: ProductForDatabase) {
       </CardContent>
     </Card>
   );
-}
-export default React.memo(ProductCard);
+});
+export default ProductCard;

@@ -12,7 +12,7 @@ import { Menu } from '../../../uiParts/Menu';
  * ログイン時のヘッダーメニューコンポーネント
  * @returns コンポーネント
  */
-function HeaderMenuAtSignIn() {
+const HeaderMenuAtSignIn = React.memo(() => {
   const dispatch = useDispatch();
   // メニュー開閉を担うステート
   const [openAccountMenu, setOpenAccountMenu] = useState(false);
@@ -70,5 +70,5 @@ function HeaderMenuAtSignIn() {
       />
     </>
   );
-}
-export default React.memo(HeaderMenuAtSignIn);
+});
+export default HeaderMenuAtSignIn;

@@ -22,7 +22,7 @@ type ImageSwiperProps = {
  * @param props images: 表示したい画像リスト
  * @returns 画像スワイパーコンポーネント
  */
-function ImageSwiper(props: ImageSwiperProps) {
+const ImageSwiper = React.memo((props: ImageSwiperProps) => {
   const classes = useStyles();
   const { images, alt } = props;
 
@@ -71,6 +71,6 @@ function ImageSwiper(props: ImageSwiperProps) {
       </Swiper>
     </>
   );
-}
+});
 
-export default React.memo(ImageSwiper);
+export default ImageSwiper;

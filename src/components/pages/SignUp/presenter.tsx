@@ -31,7 +31,7 @@ const useStyles = makeStyles({
  * サインアップ画面のコンポーネント
  * @return サインアップコンポーネント
  */
-function SignUp() {
+const SignUp = React.memo(() => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -163,6 +163,6 @@ function SignUp() {
       />
     </div>
   );
-}
+});
 
-export default React.memo(SignUp);
+export default SignUp;

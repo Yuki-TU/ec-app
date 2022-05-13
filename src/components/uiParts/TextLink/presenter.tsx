@@ -15,7 +15,7 @@ type TextLinkProps = {
  * @param props - label: 表示ラベル, onClick: クリックされた時のコールバック
  * @returns
  */
-function TextLink(props: TextLinkProps) {
+const TextLink = React.memo((props: TextLinkProps) => {
   const classes = useStyles();
   const { label, onClick } = props;
 
@@ -30,6 +30,6 @@ function TextLink(props: TextLinkProps) {
       {label}
     </div>
   );
-}
+});
 
-export default React.memo(TextLink);
+export default TextLink;
