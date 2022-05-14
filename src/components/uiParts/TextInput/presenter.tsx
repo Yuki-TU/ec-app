@@ -1,6 +1,5 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import { useStyles } from './style';
 
 /** TextInputの引数の型定義 */
 export type TextInputProps = {
@@ -40,26 +39,23 @@ const TextInput = React.memo(
     value,
     type,
     onChange,
-  }: TextInputProps) => {
-    const classes = useStyles();
-    const textStyle = fullWidth ? classes.full : classes.half;
-
-    return (
-      <TextField
-        className={textStyle}
-        fullWidth={fullWidth}
-        label={label}
-        margin="dense"
-        multiline={multiline}
-        required={required}
-        rows={rows}
-        value={value}
-        type={type}
-        onChange={onChange}
-        inputProps={{ minLength }}
-      />
-    );
-  }
+  }: TextInputProps) => (
+    <TextField
+      className={
+        fullWidth ? 'mx-auto mb-4 w-[calc(100%_-_16px)] min-w-[130px]' : 'mb-4'
+      }
+      fullWidth={fullWidth}
+      label={label}
+      margin="dense"
+      multiline={multiline}
+      required={required}
+      rows={rows}
+      value={value}
+      type={type}
+      onChange={onChange}
+      inputProps={{ minLength }}
+    />
+  )
 );
 
 export default TextInput;

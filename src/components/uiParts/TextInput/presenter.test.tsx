@@ -2,16 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { TextInput } from '.';
-import { useStyles } from './style';
-
-// スタイルを指定するuseStyles関数はモック化
-jest.mock('./style');
-const mockUseStyles = useStyles as jest.Mock;
 
 describe('TextInputコンポーネントはテキスト入力を表示する', () => {
   beforeEach(() => {
-    // 空のオブジェクトを返す
-    mockUseStyles.mockReturnValue({});
     render(
       <TextInput
         fullWidth={false}
