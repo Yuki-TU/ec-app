@@ -7,6 +7,7 @@ ec-app-ystore は EC サイトの ystore です。
 言語は、TypeScript(\*.ts）で記述。
 ライブラリは[React.js](https://ja.reactjs.org/) を利用。
 デザインは[material-ui](https://mui.com/getting-started/usage/)を利用。
+CSS フレームワークは[TailwndCSS](https://tailwindcss.com/)を利用。
 状態管理は[redux](https://redux.js.org/) 及び [reduxtoolkit](https://redux-toolkit.js.org/)を利用。
 ルーティングは[react-router](https://reactrouter.com/)を利用。
 アプリケーションサービス [fireabase](https://firebase.google.com/?hl=ja) を利用。
