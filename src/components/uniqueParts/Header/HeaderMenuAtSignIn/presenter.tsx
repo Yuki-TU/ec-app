@@ -1,50 +1,45 @@
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { push } from 'connected-react-router';
-import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { signOut } from '../../../../reducks/users/operations';
+import { Action } from '@reduxjs/toolkit';
+import React from 'react';
 import { IconButton } from '../../../uiParts/IconButton';
 import { Menu } from '../../../uiParts/Menu';
+
+type Props = {
+  /** アカウントメニュー表示位置 */
+  accountMenuAnchorRef: React.RefObject<HTMLButtonElement>;
+  /** アカウントメニュー開閉途toggle関数 */
+  toggleAccountMenu: () => void;
+  /** アカウントメニュー一覧 */
+  accoutMenuItems: {
+    onClick: () => void;
+    label: string;
+  }[];
+  /** アカウント開閉フラグ */
+  isOpenAccountMenu: boolean;
+  /** サインアウトする */
+  onClickSignOut: () => (dispatch: React.Dispatch<Action>) => Promise<void>;
+  /** アカウントメニューを閉じる */
+  closeAccountMenu: () => void;
+  /** 出品ボタンを押した時 */
+  onClickExhibit: () => void;
+};
 
 /**
  * ログイン時のヘッダーメニューコンポーネント
  * @returns コンポーネント
  */
-const HeaderMenuAtSignIn = React.memo(() => {
-  const dispatch = useDispatch();
-  // メニュー開閉を担うステート
-  const [openAccountMenu, setOpenAccountMenu] = useState(false);
-  // アカウントアイコンののエレメント、アカウントめニューの表示位置の指定に利用
-  const accountMenuAnchorRef = useRef<HTMLButtonElement>(null);
-
-  const toggleAccountMenu = useCallback(() => {
-    setOpenAccountMenu((prevOpenAccountMenu) => !prevOpenAccountMenu);
-  }, [setOpenAccountMenu]);
-
-  const accoutMenuItems = [
-    {
-      onClick: () => {
-        dispatch(push('/account'));
-      },
-      label: 'アカウント情報',
-    },
-    {
-      onClick: () => {
-        dispatch(push('/exhibited-products'));
-      },
-      label: '出品商品一覧',
-    },
-    {
-      onClick: () => {
-        dispatch(push('/favorite-products'));
-      },
-      label: 'お気に入り一覧',
-    },
-  ];
-
-  return (
+const HeaderMenuAtSignInPresenter = React.memo(
+  ({
+    accountMenuAnchorRef,
+    toggleAccountMenu,
+    accoutMenuItems,
+    isOpenAccountMenu,
+    onClickSignOut,
+    onClickExhibit,
+    closeAccountMenu,
+  }: Props) => (
     <>
       <IconButton
         reference={accountMenuAnchorRef}
@@ -55,20 +50,21 @@ const HeaderMenuAtSignIn = React.memo(() => {
       <Menu
         menuItems={accoutMenuItems}
         reference={accountMenuAnchorRef}
-        openMenu={openAccountMenu}
-        setOpenMenu={setOpenAccountMenu}
+        isOpenMenu={isOpenAccountMenu}
+        closeMenu={closeAccountMenu}
       />
       <IconButton
-        onClick={() => dispatch(push('/edit-product'))}
+        onClick={onClickExhibit}
         icon={<PhotoCameraIcon />}
         label="出品"
       />
       <IconButton
-        onClick={() => dispatch(signOut())}
+        onClick={onClickSignOut}
         icon={<ExitToAppIcon />}
         label="サインアウト"
       />
     </>
-  );
-});
-export default HeaderMenuAtSignIn;
+  )
+);
+
+export default HeaderMenuAtSignInPresenter;
