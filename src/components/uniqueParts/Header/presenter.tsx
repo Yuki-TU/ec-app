@@ -1,46 +1,43 @@
 import { AppBar, Toolbar } from '@material-ui/core';
-import { push } from 'connected-react-router';
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import logo from '../../../assets/images/logo.png';
-import { useSelector } from '../../../reducks/store';
-import { loadSignedIn } from '../../../reducks/users/selectors';
 import { HeaderMenuAtSignIn } from './HeaderMenuAtSignIn';
 import { HeaderMenuAtSignOut } from './HeaderMenuAtSignOut';
-import { useStyles } from './style';
+
+type Props = {
+  /** サインインフラグ */
+  isSignedIn: boolean;
+  /** ロゴを押した時時の関数 */
+  onClickLogo: React.ReactEventHandler<HTMLDivElement>;
+};
 /**
- * ヘッダーコンポーネント
+ * ヘッダーDOMコンポーネント
+ *
  * @returns ヘッダーコンポーネント
  */
-function Header() {
-  const dispatch = useDispatch();
-  const classes = useStyles();
-  const selector = useSelector((state) => state);
-  const isSignedIn = loadSignedIn(selector);
+const HeaderPresenter = ({ isSignedIn, onClickLogo }: Props) => (
+  <AppBar position="fixed" className="text-[#444] bg-white">
+    <Toolbar className="p-0 my-0 mx-auto w-full max-w-5xl">
+      <img
+        alt="logo"
+        src={logo}
+        onClick={onClickLogo}
+        className="w-[66.8px] h-[66.8px]"
+        onKeyPress={onClickLogo}
+        role="presentation"
+      />
+      {isSignedIn && (
+        <div className="my-0 mr-0 ml-auto">
+          <HeaderMenuAtSignIn />
+        </div>
+      )}
+      {!isSignedIn && (
+        <div className="my-0 mr-0 ml-auto">
+          <HeaderMenuAtSignOut />
+        </div>
+      )}
+    </Toolbar>
+  </AppBar>
+);
 
-  return (
-    <AppBar position="fixed" className={classes.menuBar}>
-      <Toolbar className={classes.toolbar}>
-        <img
-          alt="logo"
-          src={logo}
-          onClick={() => dispatch(push('/'))}
-          className={classes.siteLogo}
-          onKeyPress={() => dispatch(push('/'))}
-          role="presentation"
-        />
-        {isSignedIn && (
-          <div className={classes.menus}>
-            <HeaderMenuAtSignIn />
-          </div>
-        )}
-        {!isSignedIn && (
-          <div className={classes.menus}>
-            <HeaderMenuAtSignOut />
-          </div>
-        )}
-      </Toolbar>
-    </AppBar>
-  );
-}
-export default Header;
+export default HeaderPresenter;
