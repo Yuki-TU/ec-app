@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import { useStyles } from './style';
 
 /** ボタンコンポーネントの型定義 */
 export type PrimaryButtonProps = {
@@ -25,21 +24,17 @@ const PrimaryButton = React.memo(
     onClick = () => {},
     type,
     disabled = false,
-  }: PrimaryButtonProps) => {
-    const classes = useStyles();
-
-    return (
-      <Button
-        className={classes.button}
-        variant="contained"
-        onClick={onClick}
-        type={type}
-        disabled={disabled}
-      >
-        {label}
-      </Button>
-    );
-  }
+  }: PrimaryButtonProps) => (
+    <Button
+      className="mb-[16px] w-full h-[40px] font-[16px] text-white bg-green-500 hover:bg-green-700"
+      variant="contained"
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+    >
+      {label}
+    </Button>
+  )
 );
 
 export default PrimaryButton;
