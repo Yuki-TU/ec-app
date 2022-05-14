@@ -20,4 +20,5 @@ module.exports = {
     },
   },
   plugins: [],
+  important: true, // materil-uiと競合するため、この指定をする
 };
