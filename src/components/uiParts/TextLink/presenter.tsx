@@ -1,5 +1,4 @@
 import React from 'react';
-import { useStyles } from './style';
 
 /** テキストリンクの引き数の方 */
 type TextLinkProps = {
@@ -10,26 +9,22 @@ type TextLinkProps = {
 };
 
 /**
- * テキストリンクのコンポーネント、
+ * テキストリンクのコンポーネント
+ *
  * マウスクリックだけでなく、タブ選択もできる
  * @param props - label: 表示ラベル, onClick: クリックされた時のコールバック
  * @returns
  */
-const TextLink = React.memo((props: TextLinkProps) => {
-  const classes = useStyles();
-  const { label, onClick } = props;
-
-  return (
-    <div
-      className={classes.root}
-      role="link"
-      tabIndex={0}
-      onClick={onClick}
-      onKeyPress={onClick}
-    >
-      {label}
-    </div>
-  );
-});
+const TextLink = React.memo(({ label, onClick }: TextLinkProps) => (
+  <div
+    className="m-2 text-[0.8rem] cursor-pointer"
+    role="link"
+    tabIndex={0}
+    onClick={onClick}
+    onKeyPress={onClick}
+  >
+    {label}
+  </div>
+));
 
 export default TextLink;
