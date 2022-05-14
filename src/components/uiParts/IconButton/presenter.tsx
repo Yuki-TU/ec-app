@@ -1,6 +1,5 @@
 import { Badge, IconButton as MuiIconButton } from '@material-ui/core';
 import React from 'react';
-import { useStyles } from './style';
 
 export type IconProps = {
   /** 表示するアイコン */
@@ -26,20 +25,18 @@ const IconButton = React.memo(
     onClick,
     badgeContent = 0,
     reference = undefined,
-  }: IconProps) => {
-    const classes = useStyles();
-
-    return (
-      <MuiIconButton onClick={onClick} ref={reference}>
-        <div className={classes.icon}>
-          <Badge badgeContent={badgeContent} color="secondary">
-            {icon}
-          </Badge>
-          <span className={classes.label}>{label}</span>
-        </div>
-      </MuiIconButton>
-    );
-  }
+  }: IconProps) => (
+    <MuiIconButton onClick={onClick} ref={reference}>
+      <div className="block sm:flex">
+        <Badge badgeContent={badgeContent} color="secondary">
+          {icon}
+        </Badge>
+        <span className="block text-[0.3rem] sm:flex sm:text-[0.9rem]">
+          {label}
+        </span>
+      </div>
+    </MuiIconButton>
+  )
 );
 
 export default IconButton;
