@@ -3,16 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { SelectBox } from '.';
-import { useStyles } from './style';
 
 // スタイルを指定するuseStyles関数はモック化
-jest.mock('./style');
-const mockUseStyles = useStyles as jest.Mock;
 
 describe('SelectBoxコンポーネントはプルダウンの選択ボックスを表示する', () => {
   test('labelに指定した文字はSelectBoxの表示文字列として表示する', () => {
-    // モックの帰り値を指定
-    mockUseStyles.mockReturnValue({});
     const valueMock = '';
     const itemsMock = [
       { id: 'male', name: 'メンズ' },
@@ -33,8 +28,6 @@ describe('SelectBoxコンポーネントはプルダウンの選択ボックス�
   });
 
   test('SelctBoxをクリックするとアイテム一覧が表示され、そのうちの一つをクリックしたら、onChangeに指定したコールバック関数が実行される', () => {
-    // モックの返り値を指定
-    mockUseStyles.mockReturnValue({});
     // モック関数を定義
     const onChangekMock = jest.fn();
     const mockValue = '';
@@ -66,8 +59,6 @@ describe('SelectBoxコンポーネントはプルダウンの選択ボックス�
   });
 
   test('マウスでSelectBoxをクリックすると、アイテム一覧が全て表示される', () => {
-    // モックの返り値を指定
-    mockUseStyles.mockReturnValue({});
     // モック関数を定義
     const onChangekMock = jest.fn();
     const mockValue = '';
