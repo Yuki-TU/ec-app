@@ -7,42 +7,30 @@ import MenuPresenter, { MenuProps } from './presenter';
  * @returns コンテナコンポーネント
  */
 const MenuContainer = React.memo((props: MenuProps) => {
-  const { reference, openMenu, setOpenMenu } = props;
-  const closeMenu = (event: React.MouseEvent<EventTarget>) => {
-    if (
-      reference?.current &&
-      reference?.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-    setOpenMenu(false);
-  };
+  const { reference, isOpenMenu, closeMenu } = props;
 
   // タブを押したらメニューを閉じる
-  const handleListKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpenMenu(false);
-    }
-  };
+  const handleListKeyDown = React.useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        closeMenu();
+      }
+    },
+    [closeMenu]
+  );
 
-  const prevOpenAccountMenu = useRef(openMenu);
+  const prevOpenAccountMenu = useRef(isOpenMenu);
   useEffect(() => {
     // メニュー開いて、閉じてからのフォーカスをメニューボタンに戻す
-    if (prevOpenAccountMenu.current && !openMenu) {
+    if (prevOpenAccountMenu.current && !isOpenMenu) {
       reference?.current?.focus();
     }
     // メニュー開閉フラグ更新
-    prevOpenAccountMenu.current = openMenu;
-  }, [openMenu]);
+    prevOpenAccountMenu.current = isOpenMenu;
+  }, [isOpenMenu]);
 
-  return (
-    <MenuPresenter
-      {...props}
-      handleListKeyDown={React.useCallback(handleListKeyDown, [setOpenMenu])}
-      closeMenu={React.useCallback(closeMenu, [setOpenMenu])}
-    />
-  );
+  return <MenuPresenter {...props} handleListKeyDown={handleListKeyDown} />;
 });
 
 export default MenuContainer;

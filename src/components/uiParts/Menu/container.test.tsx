@@ -3,13 +3,10 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Menu } from '.';
 
-// HACK: テストでは、anyを許可
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
 describe('Menuコンポーネントは、メニューを表示する', () => {
   test('openMenuがtrueの時は、メニューを表示する', () => {
     const mockMenuItems = [{ onClick: jest.fn(), label: 'アカウント' }];
-    const mockSetOpenMenu = jest.fn() as any;
+    const mockCloseMenu = jest.fn();
     const mockOpenMenu = true;
     const mockReference =
       jest.fn() as unknown as React.RefObject<HTMLButtonElement>;
@@ -18,15 +15,15 @@ describe('Menuコンポーネントは、メニューを表示する', () => {
       <Menu
         menuItems={mockMenuItems}
         reference={mockReference}
-        openMenu={mockOpenMenu}
-        setOpenMenu={mockSetOpenMenu}
+        isOpenMenu={mockOpenMenu}
+        closeMenu={mockCloseMenu}
       />
     );
     expect(screen.getByText('アカウント')).toBeInTheDocument();
   });
   test('openMenuがtrueの時は、メニューを非表示する', () => {
     const mockMenuItems = [{ onClick: jest.fn(), label: 'アカウント' }];
-    const mockSetOpenMenu = jest.fn() as any;
+    const mockCloseMenu = jest.fn();
     const mockOpenMenu = false;
     const mockReference =
       jest.fn() as unknown as React.RefObject<HTMLButtonElement>;
@@ -35,8 +32,8 @@ describe('Menuコンポーネントは、メニューを表示する', () => {
       <Menu
         menuItems={mockMenuItems}
         reference={mockReference}
-        openMenu={mockOpenMenu}
-        setOpenMenu={mockSetOpenMenu}
+        isOpenMenu={mockOpenMenu}
+        closeMenu={mockCloseMenu}
       />
     );
     expect(screen.queryByText('アカウント')).not.toBeInTheDocument();
