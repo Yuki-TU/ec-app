@@ -3,7 +3,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { useStyles } from './style';
 
 type SelectBoxProps = {
   /** 表示ラベル */
@@ -29,12 +28,9 @@ type SelectBoxProps = {
  * @param props - {label: 表示ラベル, selectedItem: 選択のアイテム, reqired: 必須か, onChange: コールバック, items: アイテム}
  * @returns コンポーネント
  */
-const SelectBox = React.memo((props: SelectBoxProps) => {
-  const classes = useStyles();
-  const { label, selectedItem, required, onChange, items } = props;
-
-  return (
-    <FormControl className={classes.formControl}>
+const SelectBox = React.memo(
+  ({ label, selectedItem, required, onChange, items }: SelectBoxProps) => (
+    <FormControl className="mb-[16px] w-full min-w-[120px]">
       <InputLabel>{label}</InputLabel>
       <Select value={selectedItem} required={required} onChange={onChange}>
         {items.map((item) => (
@@ -44,7 +40,7 @@ const SelectBox = React.memo((props: SelectBoxProps) => {
         ))}
       </Select>
     </FormControl>
-  );
-});
+  )
+);
 
 export default SelectBox;
