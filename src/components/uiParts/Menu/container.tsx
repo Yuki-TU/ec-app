@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
+import { useFocusBack } from './hook';
 import MenuPresenter, { MenuProps } from './presenter';
 
 /**
@@ -20,15 +21,7 @@ const MenuContainer = React.memo((props: MenuProps) => {
     [closeMenu]
   );
 
-  const prevOpenAccountMenu = useRef(isOpenMenu);
-  useEffect(() => {
-    // メニュー開いて、閉じてからのフォーカスをメニューボタンに戻す
-    if (prevOpenAccountMenu.current && !isOpenMenu) {
-      reference?.current?.focus();
-    }
-    // メニュー開閉フラグ更新
-    prevOpenAccountMenu.current = isOpenMenu;
-  }, [isOpenMenu]);
+  useFocusBack(isOpenMenu, reference);
 
   return <MenuPresenter {...props} handleListKeyDown={handleListKeyDown} />;
 });
