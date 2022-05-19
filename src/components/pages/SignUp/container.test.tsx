@@ -6,6 +6,9 @@ import { Provider } from 'react-redux';
 import { SignUp } from '.';
 import createStore from '../../../reducks/store';
 
+// モック
+jest.mock('../../../firebase', () => {});
+
 afterEach(() => {
   cleanup();
 });
