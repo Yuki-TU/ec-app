@@ -99,6 +99,7 @@ const SignUp = React.memo((props: Props) => (
         type="password"
         onChange={props.inputConfirmPassword}
       />
+      <div className="h-[50px]" />
       <PrimaryButton label="登録" type="submit" />
     </form>
     <TextLink
