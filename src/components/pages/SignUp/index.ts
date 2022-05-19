@@ -1,1 +1,1 @@
-export { default as SignUp } from './presenter';
+export { default as SignUp } from './container';
